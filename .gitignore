@@ -1,0 +1,12 @@
+# Environment variables
+env/
+
+# Python
+__pycache__/
+
+# Poetry
+poetry.lock
+
+# Project related
+terrorism/
+data/
