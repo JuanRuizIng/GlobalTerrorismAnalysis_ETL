@@ -23,7 +23,7 @@ def creating_engine():
     return engine
 
 
-#Function for infer sql types
+# Function for infer sql types
 def infer_sqlalchemy_type(dtype, column_name):
     """ Map pandas dtype to SQLAlchemy's types """
     if column_name == 'eventid':
@@ -41,14 +41,14 @@ def infer_sqlalchemy_type(dtype, column_name):
 
 
 # Function to create table
-
 def create_table(engine, df, table_name):
     if not inspect(engine).has_table(table_name):  # If table don't exist, Create.
         metadata = MetaData()
         columns = [Column(name, infer_sqlalchemy_type(dtype, name)) for name, dtype in df.dtypes.items()]
+        
         table = Table(table_name, metadata, *columns)
         table.create(engine)
-        # Insert data into the table
+
         df.to_sql(table_name, con=engine, if_exists='append', index=False)
     else:
         print(f'Table {table_name} already exists.')
