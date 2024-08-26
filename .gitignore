@@ -8,5 +8,4 @@ __pycache__/
 poetry.lock
 
 # Project related
-terrorism/
 data/
