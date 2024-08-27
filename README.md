@@ -68,8 +68,6 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 * **weaptype1**: Code of the type of weapon.
 * **nkill**: Number of people killed.
 * **property**: Indicates if there was property damage. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
-* **propextent_txt**: Textual description of the extent of the damage to the property.
-* **propextent**: Code of the extent of the damage to the property.
 * **ishostkid**: Indicates if there was a hostage kidnapping. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
 * **INT_ANY**: Indicates international participation. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
 
