@@ -42,9 +42,12 @@ def infer_sqlalchemy_type(dtype, column_name):
 
 # Function to create table
 def create_table(engine, df, table_name):
-    if not inspect(engine).has_table(table_name):  # If table don't exist, Create.
+    if not inspect(engine).has_table(table_name):  # If the table doesn't exist, create it.
         metadata = MetaData()
-        columns = [Column(name, infer_sqlalchemy_type(dtype, name)) for name, dtype in df.dtypes.items()]
+        columns = [Column(name,
+                          infer_sqlalchemy_type(dtype, name),
+                          primary_key=(name == 'eventid')) \
+                              for name, dtype in df.dtypes.items()]
         
         table = Table(table_name, metadata, *columns)
         table.create(engine)
