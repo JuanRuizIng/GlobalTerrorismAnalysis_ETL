@@ -6,3 +6,6 @@ __pycache__/
 
 # Poetry
 poetry.lock
+
+# Project related
+data/
