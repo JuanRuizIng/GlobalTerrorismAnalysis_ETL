@@ -73,7 +73,7 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 
 ## Data flow
 
-![Data flow](https://github.com/user-attachments/assets/29934e1-2f10-46c1-aaeb-7fe5f100d64c)
+![Data flow](https://github.com/user-attachments/assets/44665b88-3789-4821-94cc-70fe05df9658)
 
 ## Run the project <img src="https://github.com/user-attachments/assets/99bffef1-2692-4cb8-ba13-d6c8c987c6dd" alt="Running code" width="30px"/>
 
