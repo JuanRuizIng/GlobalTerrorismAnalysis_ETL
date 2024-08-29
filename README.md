@@ -136,7 +136,8 @@ Execute `poetry install` to install the dependencies. In some case of error with
 We execute the 2 notebooks following the next order. You can run these by just pressing the "Execute All" button:
 
    1. *001_rawDataLoad.ipynb*
-   2. *002_GlobalTerrorismEDA_Load.ipynb*
+   2. *002_GlobalTerrorismEDA.ipynb*
+   3. *003_cleanDataLoad.ipynb*
 
 ![image](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
 
