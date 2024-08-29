@@ -8,4 +8,7 @@ __pycache__/
 poetry.lock
 
 # Project related
+assets/
 data/
+dashboard/
+pdf/
