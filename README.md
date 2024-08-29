@@ -71,6 +71,10 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 * **ishostkid**: Indicates if there was a hostage kidnapping. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
 * **INT_ANY**: Indicates international participation. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
 
+## Data flow
+
+![Data flow](https://github.com/user-attachments/assets/29934e1-2f10-46c1-aaeb-7fe5f100d64c)
+
 ## Run the project <img src="https://github.com/user-attachments/assets/99bffef1-2692-4cb8-ba13-d6c8c987c6dd" alt="Running code" width="30px"/>
 
 ### Clone the repository
