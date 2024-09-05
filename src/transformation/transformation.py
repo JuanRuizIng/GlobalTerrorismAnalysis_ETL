@@ -2,7 +2,11 @@ from src.database.database import creating_engine, create_table
 import pandas as pd
 
 def general_cleaning(df):
-    """The general cleaning of the df with EDA help"""
+    """
+    The general cleaning of the df with EDA help
+    
+    """
+    
     columns_choice = [
     "eventid",
     "iyear",
@@ -59,11 +63,15 @@ def general_cleaning(df):
     return df
 
 def load_clean():
-    """ Load the cleaned data into the database """
+    """
+    Load the cleaned data into the database
+    
+    """
+    
     engine = creating_engine()
     df = pd.read_sql_query('SELECT * FROM global_terrorism_db_raw', engine)
     df = general_cleaning(df)
     create_table(engine, df, 'global_terrorism_db_cleaned')
 
-#Check
-load_clean()
+# Checking the data load
+# load_clean()
