@@ -25,12 +25,6 @@ from src.transformation.transformation import *
 import json
 
 
-# Loading Pandas dataframe
-# -------------------------
-
-
-
-
 # Creating tasks functions
 # ------------------------
 
