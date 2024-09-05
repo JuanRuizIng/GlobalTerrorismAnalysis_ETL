@@ -50,3 +50,6 @@ def gta_dag():
     This DAG is going to execute the ETL pipeline for the Global Terrorism Analysis project.
     
     """
+    @task
+    def extract_raw_db():
+        return extract_raw_db()

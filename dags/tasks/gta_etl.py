@@ -14,9 +14,33 @@ except FileNotFoundError:
         """)
 print(os.getcwd())
 
+
 # Importing the necessary modules
 # --------------------------------
 
 from src.database.database import creating_engine, create_table
 from src.rawLoad.raw import *
 from src.transformation.transformation import *
+
+import json
+
+
+# Loading Pandas dataframe
+# -------------------------
+
+
+
+
+# Creating tasks functions
+# ------------------------
+
+def extract_raw_db() -> json:
+    """
+    Extract the raw data from the database
+    
+    """
+    
+    engine = creating_engine()
+    df = pd.read_sql_table("global_terrorism_db_cleaned", engine)
+
+    return df.to_json(orient="records")
