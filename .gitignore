@@ -1,14 +1,20 @@
 # Environment variables
 env/
 
-# Python
+# Data files
+data/
+
+# Python cache and virtual envs
 __pycache__/
+venv/
 
 # Poetry
 poetry.lock
 
+# Airflow
+airflow/
+
 # Project related
 assets/
-data/
 dashboard/
 pdf/
