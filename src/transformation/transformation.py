@@ -73,5 +73,5 @@ def load_clean():
     df = general_cleaning(df)
     create_table(engine, df, 'global_terrorism_db_cleaned')
 
-# Checking the data load
+# Checking the function
 # load_clean()
