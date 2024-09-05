@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, Integer, Float, String, DateTime, inspect, MetaData, Table, Column, BIGINT
+from sqlalchemy_utils import database_exists, create_database
 
 
 # Reading the environment variables
@@ -19,6 +20,9 @@ database = os.getenv("PG_DATABASE")
 def creating_engine():
     url = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     engine = create_engine(url)
+    
+    if not database_exists(engine.url):
+        create_database(engine.url)
     
     return engine
 
