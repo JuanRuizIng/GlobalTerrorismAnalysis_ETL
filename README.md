@@ -61,7 +61,6 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 * **gname**: Name of the group that carried out the attack.
 * **guncertain1**: Indicates if the perpetrator group is suspected or unconfirmed. Values: `1` for "Yes", `0` for "No".
 * **individual**: Indicates if the perpetrators were individuals not affiliated with a group. Values: `1` for "Yes", `0` for "No".
-* **nperps**: Number of perpetrators.
 * **nperpcap**: Number of captured perpetrators.
 * **claimed**: Indicates if someone claimed responsibility for the attack. Values: `1` for "Yes", `0` for "No".
 * **weaptype1_txt**: Textual description of the type of weapon.
