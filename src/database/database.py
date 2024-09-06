@@ -1,10 +1,11 @@
 import os
+import sys
+
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, Integer, Float, String, DateTime, inspect, MetaData, Table, Column, BIGINT
 
-
 # Reading the environment variables
-load_dotenv("./env/.env")
+load_dotenv(f"{sys.path[0]}/../../env/.env")
 
 user = os.getenv("PG_USER")
 password = os.getenv("PG_PASSWORD")
@@ -14,14 +15,12 @@ port = os.getenv("PG_PORT")
 
 database = os.getenv("PG_DATABASE")
 
-
 # Creating the connection engine from the URL made up of the environment variables
 def creating_engine():
     url = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     engine = create_engine(url)
     
     return engine
-
 
 # Function for infer sql types
 def infer_sqlalchemy_type(dtype, column_name):

@@ -1,24 +1,19 @@
-# Establishing the working directory
-# -----------------------------------
-
+from dotenv import load_dotenv
+import sys
 import os
 
-try:
-    os.chdir('../../GlobalTerrorismAnalysis_ETL')
-except FileNotFoundError:
-    print("""
-        Posiblemente ya ejecutaste este bloque dos o más veces o tal vez el directorio está incorrecto. 
-        ¿Ya ejecutaste este bloque antes y funcionó? Recuerda no ejecutarlo de nuevo. 
-        ¿Estás en el directorio incorrecto? Puedes cambiarlo. 
-        Recuerda el directorio donde estás:
-        """)
-print(os.getcwd())
+load_dotenv(f"{sys.path[0]}/../env/.env")
+
+path = os.getenv("PROJECT_PATH")
+email = os.getenv("AIRFLOW_EMAIL")
+
+sys.path.append(f"{path}")
+
 
 # Libraries to work with Airflow
 # --------------------------------
 
 from datetime import datetime, timedelta
-from airflow import DAG
 from airflow.decorators import dag, task
 
 # Importing the necessary modules and env variables
@@ -26,13 +21,12 @@ from airflow.decorators import dag, task
 
 from dags.tasks.gta_etl import *
 
-email = os.getenv('AIRFLOW_EMAIL')
 
 default_args = {
-    'owner': 'airflow',
+    'owner': "airflow",
     'depends_on_past': False,
     'start_date': datetime(2024, 9, 5),
-    'email': [email],
+    'email': f"{email}",
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
@@ -42,7 +36,7 @@ default_args = {
 @dag(
     default_args=default_args,
     description='Creating an ETL pipeline for out GTA database.',
-    schedule_interval='@daily',
+    schedule='@daily',
 )
 
 def gta_dag():
@@ -53,3 +47,7 @@ def gta_dag():
     @task
     def extract_raw_db():
         return extract_raw_db()
+    
+    extract_raw_db()
+    
+global_terrorism_dag = gta_dag()

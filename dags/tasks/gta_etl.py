@@ -1,19 +1,13 @@
-# Establishing the working directory
-# -----------------------------------
-
+from dotenv import load_dotenv
+import sys
 import os
 
-try:
-    os.chdir('../../GlobalTerrorismAnalysis_ETL')
-except FileNotFoundError:
-    print("""
-        Posiblemente ya ejecutaste este bloque dos o más veces o tal vez el directorio está incorrecto. 
-        ¿Ya ejecutaste este bloque antes y funcionó? Recuerda no ejecutarlo de nuevo. 
-        ¿Estás en el directorio incorrecto? Puedes cambiarlo. 
-        Recuerda el directorio donde estás:
-        """)
-print(os.getcwd())
+load_dotenv(f"{sys.path[0]}/../../env/.env")
 
+path = os.getenv("PROJECT_PATH")
+email = os.getenv("AIRFLOW_EMAIL")
+
+sys.path.append(f"{path}")
 
 # Importing the necessary modules
 # --------------------------------
@@ -35,6 +29,14 @@ def extract_raw_db() -> json:
     """
     
     engine = creating_engine()
-    df = pd.read_sql_table("global_terrorism_db_cleaned", engine)
 
-    return df.to_json(orient="records")
+    try:
+        # Asegurarse de que el engine es compatible con SQLAlchemy
+        df = pd.read_sql_table("global_terrorism_db_cleaned", con=engine)
+        print("Data successfully retrieved.")
+        return df.to_json(orient="records")
+    except Exception as e:
+        print(f"Error retrieving data: {e}")
+
+# df = extract_raw_db()
+# print(df)
