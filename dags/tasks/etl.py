@@ -23,9 +23,6 @@ from src.database.database import creating_engine, create_table
 import json
 import pandas as pd
 import logging
-import warnings
-
-warnings.simplefilter('ignore', UserWarning)
 
 
 # Creating tasks functions
@@ -45,8 +42,7 @@ def extract_raw_db():
             
             df = pd.read_sql_query(query, conn)
             logging.info("Data successfully retrieved.")
-        
-        
+               
         return df.to_json(orient="records")
     except Exception as e:
         print(f"Error retrieving data: {e}")
