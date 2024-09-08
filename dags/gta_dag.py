@@ -19,7 +19,7 @@ from airflow.decorators import dag, task
 # Importing the necessary modules and env variables
 # --------------------------------
 
-from dags.tasks.gta_etl import *
+from dags.tasks.etl import *
 
 
 default_args = {
