@@ -1,11 +1,9 @@
 import os
-import sys
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, Integer, Float, String, DateTime, inspect, MetaData, Table, Column, BIGINT
 
-# Reading the environment variables
-load_dotenv(f"{sys.path[0]}/../../env/.env")
+load_dotenv("./env/.env")
 
 user = os.getenv("PG_USER")
 password = os.getenv("PG_PASSWORD")

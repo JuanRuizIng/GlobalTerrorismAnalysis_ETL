@@ -1,15 +1,3 @@
-from dotenv import load_dotenv
-import sys
-import os
-
-load_dotenv(f"{sys.path[0]}/../env/.env")
-
-path = os.getenv("PROJECT_PATH")
-email = os.getenv("AIRFLOW_EMAIL")
-
-sys.path.append(f"{path}")
-
-
 # Libraries to work with Airflow
 # --------------------------------
 
@@ -19,14 +7,14 @@ from airflow.decorators import dag, task
 # Importing the necessary modules and env variables
 # --------------------------------
 
-from dags.tasks.etl import *
+from tasks.etl import *
 
 
 default_args = {
     'owner': "airflow",
     'depends_on_past': False,
     'start_date': datetime(2024, 9, 5),
-    'email': f"{email}",
+    'email': "example@example.com",
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
@@ -45,9 +33,15 @@ def gta_dag():
     
     """
     @task
-    def extract_raw_db():
+    def extract_raw_db_task():
         return extract_raw_db()
     
-    extract_raw_db()
+    extracted_data = extract_raw_db_task()
+    
+    @task
+    def uploading_data_task(data):
+        return uploading_test(data)
+    
+    uploading_data_task(extracted_data)
     
 global_terrorism_dag = gta_dag()
