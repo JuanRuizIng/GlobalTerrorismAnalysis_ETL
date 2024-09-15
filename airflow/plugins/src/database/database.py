@@ -23,7 +23,7 @@ def creating_engine():
 # Function for infer sql types
 def infer_sqlalchemy_type(dtype, column_name):
     """ Map pandas dtype to SQLAlchemy's types """
-    if column_name == 'eventid':
+    if column_name == "eventid":
         return BIGINT
     elif "int" in dtype.name:
         return Integer
@@ -39,16 +39,15 @@ def infer_sqlalchemy_type(dtype, column_name):
 
 # Function to create table
 def create_table(engine, df, table_name):
-    if not inspect(engine).has_table(table_name):  # If the table doesn't exist, create it.
+    if not inspect(engine).has_table(table_name):
         metadata = MetaData()
         columns = [Column(name,
                           infer_sqlalchemy_type(dtype, name),
-                          primary_key=(name == 'eventid')) \
-                              for name, dtype in df.dtypes.items()]
+                          primary_key=(name == "eventid")) for name, dtype in df.dtypes.items()]
         
         table = Table(table_name, metadata, *columns)
         table.create(engine)
 
-        df.to_sql(table_name, con=engine, if_exists='append', index=False)
+        df.to_sql(table_name, con=engine, if_exists="append", index=False)
     else:
-        print(f'Table {table_name} already exists.')
+        print(f"Table {table_name} already exists.")

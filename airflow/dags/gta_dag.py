@@ -9,6 +9,10 @@ from airflow.decorators import dag, task
 
 from tasks.etl import *
 
+from pprint import pprint
+import sys
+pprint(sys.path)
+
 
 default_args = {
     'owner': "airflow",
@@ -18,7 +22,7 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=3)
+    'retry_delay': timedelta(minutes=1)
 }
 
 @dag(
