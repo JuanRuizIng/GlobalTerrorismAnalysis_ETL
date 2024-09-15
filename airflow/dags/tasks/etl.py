@@ -1,7 +1,7 @@
 # Importing the necessary modules
 # --------------------------------
 
-from src.database.database import creating_engine, create_table
+from database.db_operations import creating_engine, create_table
 
 import json
 import pandas as pd
