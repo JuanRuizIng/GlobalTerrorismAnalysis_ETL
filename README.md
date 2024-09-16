@@ -111,15 +111,15 @@ To establish the connection to the database, we use a module called *connection.
 2. There we create a file called ***.env***.
 
 3. In that file we declare 6 enviromental variables. Remember that the variables in this case go without double quotes, i.e. the string notation (`"`):
-   ```python
-    PG_HOST = # host address, e.g. localhost or 127.0.0.1
-    PG_PORT = # PostgreSQL port, e.g. 5432
+ ```python
+PG_HOST = # host address, e.g. localhost or 127.0.0.1
+PG_PORT = # PostgreSQL port, e.g. 5432
 
-    PG_USER = # your PostgreSQL user
-    PG_PASSWORD = # your user password
-    
-    PG_DATABASE = # your database name, e.g. postgres
-   ```
+PG_USER = # your PostgreSQL user
+PG_PASSWORD = # your user password
+
+PG_DATABASE = # your database name, e.g. postgres
+ ```
 
 #### Demonstration of the process
 
