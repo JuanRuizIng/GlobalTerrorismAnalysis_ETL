@@ -9,15 +9,10 @@ from airflow.decorators import dag, task
 
 from tasks.etl import *
 
-from pprint import pprint
-import sys
-pprint(sys.path)
-
-
 default_args = {
     'owner': "airflow",
     'depends_on_past': False,
-    'start_date': datetime(2024, 9, 5),
+    'start_date': datetime(2024, 12, 14),
     'email': "example@example.com",
     'email_on_failure': False,
     'email_on_retry': False,
@@ -27,8 +22,11 @@ default_args = {
 
 @dag(
     default_args=default_args,
-    description='Creating an ETL pipeline for out GTA database.',
-    schedule='@daily',
+    description='Creating an ETL pipeline for our GTA database.',
+    schedule=timedelta(days=1),
+    max_active_runs=1,
+    catchup=False,
+    concurrency=4,
 )
 
 def gta_dag():

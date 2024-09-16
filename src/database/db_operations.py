@@ -1,7 +1,11 @@
-import os
-
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, Integer, Float, String, DateTime, inspect, MetaData, Table, Column, BIGINT
+
+import os
+import logging
+import warnings
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
 
 load_dotenv("./env/.env")
 
@@ -23,6 +27,9 @@ def creating_engine():
 # Function for infer sql types
 def infer_sqlalchemy_type(dtype, column_name):
     """ Map pandas dtype to SQLAlchemy's types """
+    
+    logging.info(f"Inferring type for {dtype.name}.")
+    
     if column_name == "eventid":
         return BIGINT
     elif "int" in dtype.name:
@@ -39,6 +46,9 @@ def infer_sqlalchemy_type(dtype, column_name):
 
 # Function to create table
 def create_table(engine, df, table_name):
+    
+    logging.info(f"Creating table {table_name} from Pandas DataFrame")
+    
     if not inspect(engine).has_table(table_name):
         metadata = MetaData()
         columns = [Column(name,
@@ -49,5 +59,7 @@ def create_table(engine, df, table_name):
         table.create(engine)
 
         df.to_sql(table_name, con=engine, if_exists="append", index=False)
+        
+        return logging.info("Table succesfully created!")
     else:
-        print(f"Table {table_name} already exists.")
+        return warnings.warn(f"Table {table_name} already exists.")

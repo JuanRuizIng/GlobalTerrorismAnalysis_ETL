@@ -19,20 +19,23 @@ def extract_raw_db():
     
     """
     
+    logging.info("Starting to extract the data.")
+    
     engine = creating_engine()
 
     try:
-        with engine.connect() as conn:
-            query = 'SELECT * FROM global_terrorism_db_cleaned'
-            
-            df = pd.read_sql_query(query, conn)
-            logging.info("Data successfully retrieved.")
+        query = 'SELECT * FROM global_terrorism_db_cleaned'
+        
+        df = pd.read_sql_query(query, engine)
+        logging.info("Data successfully extracted.")
                
         return df.to_json(orient="records")
     except Exception as e:
-        logging.error(f"Error retrieving data: {e}")
+        logging.error(f"Error extracting data: {e}")
         
 def uploading_test(df_json):
+    
+    logging.info("Starting to upload the data.")
     
     engine = creating_engine()
     
@@ -42,10 +45,7 @@ def uploading_test(df_json):
     df = df[0:10]
     
     try:
-        with engine.connect() as conn:
-            create_table(conn, df, "test_pipeline")
-        
-        return logging.info("Table succesfully created!")
+        create_table(engine, df, "test_pipeline")
         
     except Exception as e:
-        logging.error(f"Error retrieving data: {e}")
+        return logging.error(f"Error uploading data: {e}")
