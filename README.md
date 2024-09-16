@@ -12,20 +12,21 @@ In this case we decided to use a dataset that includes information on terrorist 
 
 ***The tools used are:***
 
-* Python 3.12 ➜ [Download site](https://www.python.org/downloads/)
+* Python 3.10 ➜ [Download site](https://www.python.org/downloads/)
 * Jupyter Notebook ➜ [VS Code tool for using notebooks](https://youtu.be/ZYat1is07VI?si=BMHUgk7XrJQksTkt)
 * PostgreSQL ➜ [Download site](https://www.postgresql.org/download/)
 * Power BI (Desktop version) ➜ [Download site](https://www.microsoft.com/es-es/power-platform/products/power-bi/desktop)
 
-The libraries needed for Python are
+The dependencies needed for Python are:
 
+* Apache Airflow
+* Dotenv
 * Pandas
 * Matplotlib
 * Seaborn
 * SQLAlchemy
-* Dotenv
 
-These libraries are included in the Poetry project config file (*pyproject.toml*). The step-by-step installation will be described later.
+These dependencies are included in the *requirements.txt* file of the Python project. The step-by-step installation will be described later.
 
 ## Dataset Information <img src="https://github.com/user-attachments/assets/5fa5298c-e359-4ef1-976d-b6132e8bda9a" alt="Dataset" width="30px"/>
 
@@ -69,6 +70,10 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 * **property**: Indicates if there was property damage. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
 * **ishostkid**: Indicates if there was a hostage kidnapping. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
 * **INT_ANY**: Indicates international participation. Values: `1` for "Yes", `0` for "No", `9` for "Unknown".
+
+## API Information <img src="https://cdn-icons-png.flaticon.com/512/10169/10169724.png" alt="API" width="30px"/>
+
+Insertar información sobre la API.
 
 ## Data flow
 
@@ -120,49 +125,44 @@ To establish the connection to the database, we use a module called *connection.
 
 ![ENV file](https://github.com/user-attachments/assets/ed5d86b4-aab7-4085-adb2-ff790ad2b35b)
 
-### Installing the dependencies with *Poetry*
+### Virtual environment
 
-> To install Poetry follow [this link](https://elcuaderno.notion.site/Poetry-8f7b23a0f9f340318bbba4ef36023d60?pvs=4).
-
-Execute `poetry install` to install the dependencies. In some case of error with the *.lock* file, just execute `poetry lock` to fix it. Now you can execute the notebooks!
+Como se crea
 
 #### Demonstration of the process
 
-![Poetry](https://github.com/user-attachments/assets/e68ff3ad-d3d7-4d4a-bd41-22550b1daa4b)
+demostración
 
-### Running the notebooks
+### Install the dependencies
 
-We execute the 2 notebooks following the next order. You can run these by just pressing the "Execute All" button:
+pip install -r requirements.txt
+
+#### Demonstration of the process
+
+demostración
+
+### Deploy the database in the cloud
+
+link del notebook
+
+### Run the notebooks
+
+We execute the 3 notebooks following the next order. You can run these by just pressing the "Execute All" button:
 
    1. *001_rawDataLoad.ipynb*
    2. *002_GlobalTerrorismEDA.ipynb*
    3. *003_cleanDataLoad.ipynb*
+   4. NOTEBOOK-API
 
 ![image](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
 
 Remember to choose **the right Python kernel** at the time of running the notebook.
 
-![image](https://github.com/user-attachments/assets/07b67e67-4fe7-4269-b31f-4b25017dd82a)
+imagen kernel
 
-### Connecting the database with Power BI
+### Airflow environment
 
-1. Open Power BI Desktop and create a new dashboard. Select the *Get data* option - be sure you choose the "PostgreSQL Database" option.
-
-![Power Bi](https://github.com/user-attachments/assets/f9a822ae-5a74-49c8-abf2-2a242c23ab96)
-
-2. Insert the PostgreSQL Server and Database Name. For example, *localhost* and *postgres*, respectively.
-
-![image](https://github.com/user-attachments/assets/0284a323-8043-45ef-bbbd-e88dd85fc854)
-
-
-3. If you manage to connect to the database the following tables will appear:
-
-![image](https://github.com/user-attachments/assets/949f2a7e-51c8-4c68-921d-b5fa37b3c663)
-
-
-4. Choose the *global_terrorism_db_cleaned* table and start making your own visualizations!
-
-![image](https://github.com/user-attachments/assets/5efe36c5-e8fb-457f-833b-2064ec55bc29)
+variables de entorno, airflow standalone, configurar airflow.cfg
 
 ## Thank you! 💕🐍
 
