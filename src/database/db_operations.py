@@ -60,6 +60,6 @@ def create_table(engine, df, table_name):
 
         df.to_sql(table_name, con=engine, if_exists="append", index=False)
         
-        return logging.info("Table succesfully created!")
+        logging.info("Table succesfully created!")
     else:
-        return warnings.warn(f"Table {table_name} already exists.")
+        warnings.warn(f"Table {table_name} already exists.")
