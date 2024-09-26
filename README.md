@@ -201,7 +201,7 @@ You can run Apache Airflow with the following command:
 airflow standalone
 ```
 
-Allow Apache Airflow to read the modules contained in `src` by giving the absolute path to that directory in the configuration variable `plugins_folder` at the `airflow.cfg` file:
+Allow Apache Airflow to read the modules contained in `src` by giving the absolute path to that directory in the configuration variable `plugins_folder` at the `airflow.cfg` file. You may need to restart Apache Airflow in case you recieve some DAG Import Error.
 
 ![plugins_folder](https://github.com/user-attachments/assets/70437ba5-a810-47fa-9c2c-faf8988727b5)
 
