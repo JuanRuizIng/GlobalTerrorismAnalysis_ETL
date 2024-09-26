@@ -208,7 +208,7 @@ Allow Apache Airflow to read the modules contained in `src` by giving the absolu
 #### Demonstration of the process
 
 > [!IMPORTANT]
-> You need to enter the address [http://localhost:8080](http://localhost:8080/) in order to run the Airflow GUI and run the DAG corresponding to the project (*global_terrorism_dag*).
+> You need to enter the address [http://localhost:8080](http://localhost:8080/) in order to run the Airflow GUI and run the DAG corresponding to the project (*gta_dag*).
 
 ![airflow](https://github.com/user-attachments/assets/b8bbb85c-c2da-4e57-9844-0fcfcc62db7a)
 
