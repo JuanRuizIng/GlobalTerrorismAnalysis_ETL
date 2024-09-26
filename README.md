@@ -17,6 +17,9 @@ In this case we decided to use a dataset that includes information on terrorist 
 * PostgreSQL ➜ [Download site](https://www.postgresql.org/download/)
 * Power BI (Desktop version) ➜ [Download site](https://www.microsoft.com/es-es/power-platform/products/power-bi/desktop)
 
+> [!WARNING]
+> Apache Airflow only runs correctly in Linux environments. If you have Windows, we recommend using a virtual machine or WSL.
+
 The dependencies needed for Python are:
 
 * Apache Airflow
@@ -75,16 +78,13 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 
 Insertar información sobre la API.
 
-## Data flow
+## Data flow <img src="https://cdn-icons-png.flaticon.com/512/1953/1953319.png" alt="Data flow" width="22px"/>
 
 ![Data flow](https://github.com/user-attachments/assets/44665b88-3789-4821-94cc-70fe05df9658)
 
 ## Run the project <img src="https://github.com/user-attachments/assets/99bffef1-2692-4cb8-ba13-d6c8c987c6dd" alt="Running code" width="30px"/>
 
-### Clone the repository
-
-> [!IMPORTANT]
-> Although in this case the example is done with Ubuntu using WSL, this process can be done for any operating system (OS).
+### Clone the repository 🔧
 
 Execute the following command to clone the repository:
 
@@ -92,7 +92,9 @@ Execute the following command to clone the repository:
   git clone https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL.git
 ```
 
-### Download the dataset
+---
+
+### Download the dataset 📥
 
 Given the large size of the file to be analyzed, we recommend downloading the dataset on your own at [this link](https://www.kaggle.com/datasets/START-UMD/gtd). Once downloaded, create a folder called data in the cloned repository: inside it save the CSV file.
 
@@ -100,7 +102,9 @@ Given the large size of the file to be analyzed, we recommend downloading the da
 
 ![CSV file](https://github.com/user-attachments/assets/f6da9726-8423-46c9-a146-cd2a1db33dc9)
 
-### Enviromental variables
+---
+
+### Enviromental variables 🌐
 
 > From now on, the steps will be done in VS Code.
 
@@ -125,27 +129,48 @@ PG_DATABASE = # your database name, e.g. postgres
 
 ![ENV file](https://github.com/user-attachments/assets/ed5d86b4-aab7-4085-adb2-ff790ad2b35b)
 
-### Virtual environment
+---
 
-Como se crea
+### Virtual environment 🐍
+
+To install the dependencies you need to first create a Python virtual environment. In order to create it run the following command:
+
+```bash
+python 3 -m venv venv
+```
+
+Once created, run this other command to be able to run the environment. It is important that you are inside the project directory:
+
+```bash
+source venv/bin/activate
+```
 
 #### Demonstration of the process
 
 demostración
 
-### Install the dependencies
+---
 
-pip install -r requirements.txt
+### Install the dependencies 📦
+
+Once you enter the virtual environment you can and execute `pip install -r requirements.txt` to install the dependencies. Now, you can execute both the notebooks and the Airflow pipeline.
 
 #### Demonstration of the process
 
 demostración
 
-### Deploy the database in the cloud
+---
 
-link del notebook
+### Deploy the database in the cloud ☁️
 
-### Run the notebooks
+To perform the Airflow tasks related to Data Extraction and Loading we recommend **making use of a cloud database service**. Here are some guidelines for deploying your database in the cloud:
+
+* [Microsoft Azure - Guide](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/docs/guides/azure_postgres.md)
+* [Google Cloud Platform (GCP) - Guide](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/docs/guides/gcp_postgres.md)
+
+---
+
+### Run the notebooks 📓
 
 We execute the 3 notebooks following the next order. You can run these by just pressing the "Execute All" button:
 
@@ -160,9 +185,34 @@ Remember to choose **the right Python kernel** at the time of running the notebo
 
 imagen kernel
 
-### Airflow environment
+---
 
-variables de entorno, airflow standalone, configurar airflow.cfg
+### 🚀 Running the Airflow pipeline
+
+To run Apache Airflow you must first export the `AIRFLOW_HOME` environment variable. This environment variable determines the project directory where we will be working with Airflow.
+
+```bash
+export AIRFLOW_HOME="$(pwd)/airflow"
+```
+
+You run Apache Airflow with the following command:
+
+```bash
+airflow standalone
+```
+
+Allow Apache Airflow to read the modules contained in `src` by giving the absolute path to that directory in the configuration variable `plugins_folder` at the `airflow.cfg` file:
+
+![plugins_folder](https://github.com/user-attachments/assets/70437ba5-a810-47fa-9c2c-faf8988727b5)
+
+#### Demonstration of the process
+
+> [!IMPORTANT]
+> You need to enter the address [http://localhost:8080](http://localhost:8080/) in order to run the Airflow GUI and run the DAG corresponding to the project (*global_terrorism_dag*).
+
+imagengif
+
+---
 
 ## Thank you! 💕🐍
 
