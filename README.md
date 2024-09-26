@@ -147,7 +147,7 @@ source venv/bin/activate
 
 #### Demonstration of the process
 
-demostración
+![venv](https://github.com/user-attachments/assets/42cfa6ca-ffac-4790-bd75-1fd172f69cdc)
 
 ---
 
@@ -157,7 +157,7 @@ Once you enter the virtual environment you can and execute `pip install -r requi
 
 #### Demonstration of the process
 
-demostración
+![pip install](https://github.com/user-attachments/assets/8c377a48-2164-4546-a12e-5765765fddab)
 
 ---
 
@@ -179,11 +179,11 @@ We execute the 3 notebooks following the next order. You can run these by just p
    3. *003_cleanDataLoad.ipynb*
    4. NOTEBOOK-API
 
-![image](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
+![orden_ejecucion](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
 
 Remember to choose **the right Python kernel** at the time of running the notebook.
 
-imagen kernel
+![py_kernel](https://github.com/user-attachments/assets/684d8050-2990-4825-838e-55d0c82f9d9d)
 
 ---
 
@@ -195,7 +195,7 @@ To run Apache Airflow you must first export the `AIRFLOW_HOME` environment varia
 export AIRFLOW_HOME="$(pwd)/airflow"
 ```
 
-You run Apache Airflow with the following command:
+You can run Apache Airflow with the following command:
 
 ```bash
 airflow standalone
@@ -210,7 +210,7 @@ Allow Apache Airflow to read the modules contained in `src` by giving the absolu
 > [!IMPORTANT]
 > You need to enter the address [http://localhost:8080](http://localhost:8080/) in order to run the Airflow GUI and run the DAG corresponding to the project (*global_terrorism_dag*).
 
-imagengif
+![airflow](https://github.com/user-attachments/assets/b8bbb85c-c2da-4e57-9844-0fcfcc62db7a)
 
 ---
 
