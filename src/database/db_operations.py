@@ -28,8 +28,6 @@ def creating_engine():
 def infer_sqlalchemy_type(dtype, column_name):
     """ Map pandas dtype to SQLAlchemy's types """
     
-    logging.info(f"Inferring type for {dtype.name}.")
-    
     if column_name == "eventid":
         return BIGINT
     elif "int" in dtype.name:
@@ -60,6 +58,6 @@ def create_table(engine, df, table_name):
 
         df.to_sql(table_name, con=engine, if_exists="append", index=False)
         
-        logging.info("Table succesfully created!")
+        logging.info(f"Table {table_name} succesfully created!")
     else:
         warnings.warn(f"Table {table_name} already exists.")

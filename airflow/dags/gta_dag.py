@@ -12,7 +12,7 @@ from tasks.etl import *
 default_args = {
     'owner': "airflow",
     'depends_on_past': False,
-    'start_date': datetime(2024, 12, 14),
+    'start_date': datetime(2024, 8, 14),
     'email': "example@example.com",
     'email_on_failure': False,
     'email_on_retry': False,
