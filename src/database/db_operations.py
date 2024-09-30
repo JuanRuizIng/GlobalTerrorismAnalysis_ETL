@@ -8,7 +8,7 @@ import warnings
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
 
-load_dotenv("./env/.env")
+load_dotenv("/home/juanruizing/GlobalTerrorismAnalysis_ETL/src/env/.env")
 
 user = os.getenv("PG_USER")
 password = os.getenv("PG_PASSWORD")

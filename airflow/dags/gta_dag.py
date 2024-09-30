@@ -17,7 +17,7 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=1)
+    'retry_delay': timedelta(minutes=120)
 }
 
 @dag(
@@ -38,12 +38,51 @@ def gta_dag():
     def extract_raw_db_task():
         return extract_raw_db()
     
-    extracted_data = extract_raw_db_task()
+    @task
+    def extract_api_task():
+        return extract_api()
     
     @task
-    def uploading_data_task(data):
-        return uploading_test(data)
+    def transform_db_task(df_json):
+        return transform_db(df_json)
     
-    uploading_data_task(extracted_data)
+    @task
+    def transform_api_task(df_json):
+        transform_api(df_json)
+
+    @task
+    def merge_task(df_json_db, df_json_api):
+        return merge(df_json_db, df_json_api)
+
+    @task
+    def DWH_definition_task(df_json):
+        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df = DWH_definition(df_json)
+        return {
+            "location": location,
+            "date": date,
+            "attackCharacteristics": attackCharacteristics,
+            "perpetratorCharacteristics": perpetratorCharacteristics,
+            "disorderType": disorderType,
+            "df": df
+        }
+
+    @task
+    def load_task(dwh_data):
+        location_json = dwh_data["location"]
+        date_json = dwh_data["date"]
+        attackCharacteristics_json = dwh_data["attackCharacteristics"]
+        perpetratorCharacteristics_json = dwh_data["perpetratorCharacteristics"]
+        disorderType_json = dwh_data["disorderType"]
+        df_json = dwh_data["df"]
+        return load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json)
+    
+
+    data_db = extract_raw_db_task()
+    data_api = extract_api_task()
+    transformed_data_db = transform_db_task(data_db)
+    transformed_data_api = transform_api_task(data_api)
+    merge_data = merge_task(transformed_data_db, transformed_data_api)
+    dwh_data = DWH_definition_task(merge_data)
+    load_task(dwh_data)
     
 global_terrorism_dag = gta_dag()
