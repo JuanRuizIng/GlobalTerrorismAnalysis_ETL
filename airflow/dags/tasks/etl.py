@@ -2,11 +2,13 @@
 # --------------------------------
 
 from database.db_operations import creating_engine, create_table
-from etl.etlFunctions import transform_db, transform_api, merge_function, DWH_definition_function
+from etl.etlFunctions import transform_db, transform_api, merge_function
 
 engine = creating_engine()
+
 from dotenv import load_dotenv
-load_dotenv("/home/juanruizing/GlobalTerrorismAnalysis_ETL/src/env/.env")
+load_dotenv("../env/.env")
+
 import json
 import os
 import pandas as pd
@@ -80,17 +82,8 @@ def extract_api():
 
 def transform_db(df_json):
     """
-    Transform the data extracted from the database.
-
-    Parameters:
-        df_json (str): JSON string containing the data to transform.
-    
-    Returns:
-        str: A JSON string containing the transformed data in records orientation.
-        
+    Function to define the DWH schema
     """
-    
-    logging.info("Starting to transform the data.")
     
     try:
         if not df_json:
@@ -98,11 +91,13 @@ def transform_db(df_json):
         
         json_data = json.loads(df_json)
         df = pd.json_normalize(data=json_data)
-        df = transform_db(df)
-        logging.info("Data successfully transformed.")
-        return df.to_json(orient="records")
+        
+        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df = transform_db(df)
+        
+        return location.to_json(orient="records"), date.to_json(orient="records"), attackCharacteristics.to_json(orient="records"), perpetratorCharacteristics.to_json(orient="records"), disorderType.to_json(orient="records"), df.to_json(orient="records")
     except Exception as e:
-        logging.error(f"Error transforming data: {e}")
+        logging.error(f"Error defining DWH schema from JSON: {e}")
+        return None, None, None, None, None, None
 
 
 def transform_api(df_json):
@@ -162,23 +157,6 @@ def merge(df_json_db, df_json_api):
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error merging data: {e}")
-
-
-def DWH_definition(df_json):
-    """
-    Function to define the DWH schema
-    """
-    try:
-        if not df_json:
-            raise ValueError("Empty JSON string")
-        
-        json_data = json.loads(df_json)
-        df = pd.json_normalize(data=json_data)
-        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df = DWH_definition_function(df)
-        return location.to_json(orient="records"), date.to_json(orient="records"), attackCharacteristics.to_json(orient="records"), perpetratorCharacteristics.to_json(orient="records"), disorderType.to_json(orient="records"), df.to_json(orient="records")
-    except Exception as e:
-        logging.error(f"Error defining DWH schema from JSON: {e}")
-        return None, None, None, None, None, None
 
 
 def load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json):
