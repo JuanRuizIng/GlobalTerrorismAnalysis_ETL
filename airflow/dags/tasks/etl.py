@@ -5,8 +5,10 @@ from database.db_operations import creating_engine, create_table
 from etl.etlFunctions import transform_db, transform_api, merge_function, DWH_definition_function
 
 engine = creating_engine()
-
+from dotenv import load_dotenv
+load_dotenv("/home/juanruizing/GlobalTerrorismAnalysis_ETL/src/env/.env")
 import json
+import os
 import pandas as pd
 import logging
 import requests
@@ -43,11 +45,13 @@ def extract_api():
     """
     Extraction of the API 
     """
+    api_key = os.getenv("API_KEY")
+    api_email = os.getenv("API_EMAIL")
     try:
         url = 'https://api.acleddata.com/acled/read.json'
         params = {
-            [API_KEY],
-            [EMAIL],
+            'key': f'{api_key}',
+            'email': f'{api_email}',
             'fields': 'event_date|country|disorder_type|actor1',
             'year': '1989|2017',
             'year_where': 'BETWEEN',
