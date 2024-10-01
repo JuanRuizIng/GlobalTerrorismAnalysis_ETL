@@ -1,19 +1,18 @@
 # Importing the necessary modules
 # --------------------------------
 
-from database.db_operations import creating_engine, create_table
+from database.db_operations import creating_engine, load_clean_data
+
+from extract.extract_db import extracting_db_data
+from extract.extract_api import extracting_api_data
+
 from etl.etlFunctions import transform_db, transform_api, merge_function
 
 engine = creating_engine()
 
-from dotenv import load_dotenv
-load_dotenv("../env/.env")
-
 import json
-import os
 import pandas as pd
 import logging
-import requests
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
@@ -21,23 +20,13 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefm
 # Creating tasks functions
 # ------------------------
 
-def extract_raw_db():
+def extract_db():
     """
     Extract the raw data from the database.
-    
-    Returns:
-        str: A JSON string containing the extracted data in records orientation.
         
     """
-    
-    logging.info("Starting to extract the data.")
-
     try:
-        query = 'SELECT * FROM global_terrorism_db_raw'
-        df = pd.read_sql_query(query, engine)
-        
-        logging.info("Data successfully extracted.")
-               
+        df = extracting_db_data()
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error extracting data: {e}")
@@ -45,36 +34,11 @@ def extract_raw_db():
 
 def extract_api():
     """
-    Extraction of the API 
+    Extraction of the API.
+    
     """
-    api_key = os.getenv("API_KEY")
-    api_email = os.getenv("API_EMAIL")
     try:
-        url = 'https://api.acleddata.com/acled/read.json'
-        params = {
-            'key': f'{api_key}',
-            'email': f'{api_email}',
-            'fields': 'event_date|country|disorder_type|actor1',
-            'year': '1989|2017',
-            'year_where': 'BETWEEN',
-            'limit': 5000,
-            'page': 1
-        }
-
-        all_records = []
-
-        while True:
-            response = requests.get(url, params=params)
-            data = response.json()
-        
-            if 'data' not in data or not data['data']:
-                break
-        
-            all_records.extend(data['data'])
-            params['page'] += 1
-
-        df = pd.DataFrame(all_records)
-        logging.info("API data successfully extracted.")
+        df = extracting_api_data()
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error extracting API data: {e}")
@@ -82,9 +46,9 @@ def extract_api():
 
 def transform_db(df_json):
     """
-    Function to define the DWH schema
-    """
+    Function to define the DWH schema.
     
+    """
     try:
         if not df_json:
             raise ValueError("Empty JSON string")
@@ -103,12 +67,6 @@ def transform_db(df_json):
 def transform_api(df_json):
     """
     Transform the data extracted from the API.
-
-    Parameters:
-        df_json (str): JSON string containing the data to transform.
-    
-    Returns:
-        str: A JSON string containing the transformed data in records orientation.
         
     """
     
@@ -162,6 +120,7 @@ def merge(df_json_db, df_json_api):
 def load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json):
     """
     Load the data into the DWH.
+    
     """
     
     logging.info("Starting to load the data.")
@@ -179,12 +138,12 @@ def load(location_json, date_json, attackCharacteristics_json, perpetratorCharac
         
         engine = creating_engine()
         
-        create_table(engine, location, "location")
-        create_table(engine, date, "date")
-        create_table(engine, attackCharacteristics, "attack_characteristics")
-        create_table(engine, perpetratorCharacteristics, "perpetrator_characteristics")
-        create_table(engine, disorderType, "disorder_type")
-        create_table(engine, df, "fact_table")
+        load_clean_data(engine, location, "location")
+        load_clean_data(engine, date, "date")
+        load_clean_data(engine, attackCharacteristics, "attack_characteristics")
+        load_clean_data(engine, perpetratorCharacteristics, "perpetrator_characteristics")
+        load_clean_data(engine, disorderType, "disorder_type")
+        load_clean_data(engine, df, "fact_table")
 
         logging.info("Data successfully loaded.")
     except Exception as e:

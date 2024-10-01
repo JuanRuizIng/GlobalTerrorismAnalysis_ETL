@@ -35,8 +35,8 @@ def gta_dag():
     
     """
     @task
-    def extract_raw_db_task():
-        return extract_raw_db()
+    def extract_db_task():
+        return extract_db()
     
     @task
     def extract_api_task():
@@ -48,7 +48,7 @@ def gta_dag():
     
     @task
     def transform_api_task(df_json):
-        transform_api(df_json)
+        return transform_api(df_json)
 
     @task
     def merge_task(df_json_db, df_json_api):
@@ -65,11 +65,14 @@ def gta_dag():
         return load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json)
     
 
-    data_db = extract_raw_db_task()
+    data_db = extract_db_task()
     data_api = extract_api_task()
+    
     transformed_data_db = transform_db_task(data_db)
     transformed_data_api = transform_api_task(data_api)
+    
     merge_data = merge_task(transformed_data_db, transformed_data_api)
+    
     load_task(transformed_data_db)
     
 global_terrorism_dag = gta_dag()

@@ -23,10 +23,18 @@ def creating_engine():
     url = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     engine = create_engine(url)
     
-    if not database_exists(engine.url):
-        create_database(engine.url)
+    if not database_exists(url):
+        create_database(url)
+        logging.info("Database created")
+    
+    logging.info("Engine created. You can now connect to the database.")
     
     return engine
+
+def disposing_engine(engine):
+    engine.dispose()
+    logging.info("Engine disposed.")
+
 
 # Function for infer sql types
 def infer_sqlalchemy_type(dtype, column_name):
@@ -47,7 +55,7 @@ def infer_sqlalchemy_type(dtype, column_name):
 
 
 # Function to create table
-def create_table(engine, df, table_name):
+def load_clean_data(engine, df, table_name):
     
     logging.info(f"Creating table {table_name} from Pandas DataFrame")
     

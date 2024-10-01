@@ -99,6 +99,7 @@ mdurl==0.1.2
 methodtools==0.4.7
 more-itertools==10.4.0
 multidict==6.0.5
+mysqlclient==2.2.4
 nest-asyncio==1.6.0
 numpy==1.26.4
 opentelemetry-api==1.26.0
