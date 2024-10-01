@@ -80,7 +80,7 @@ Insertar información sobre la API.
 
 ## Data flow <img src="https://cdn-icons-png.flaticon.com/512/1953/1953319.png" alt="Data flow" width="22px"/>
 
-![Data flow](https://github.com/user-attachments/assets/44665b88-3789-4821-94cc-70fe05df9658)
+![Flujo de datos](https://github.com/user-attachments/assets/f44fdb1e-6883-4163-8d50-2b9b5d00383d)
 
 ## Run the project <img src="https://github.com/user-attachments/assets/99bffef1-2692-4cb8-ba13-d6c8c987c6dd" alt="Running code" width="30px"/>
 
