@@ -19,7 +19,7 @@ port = os.getenv("PG_PORT")
 database = os.getenv("PG_DATABASE")
 
 # Creating the connection engine from the URL made up of the environment variables
-def creating_engine():
+def creating_engine(database=database):
     url = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     engine = create_engine(url)
     
@@ -55,7 +55,7 @@ def infer_sqlalchemy_type(dtype, column_name):
 
 
 # Function to create table
-def load_clean_data(engine, df, table_name):
+def load_clean_data(engine, df, table_name, primary_key="eventid"):
     
     logging.info(f"Creating table {table_name} from Pandas DataFrame")
     
@@ -63,7 +63,7 @@ def load_clean_data(engine, df, table_name):
         metadata = MetaData()
         columns = [Column(name,
                           infer_sqlalchemy_type(dtype, name),
-                          primary_key=(name == "eventid")) for name, dtype in df.dtypes.items()]
+                          primary_key=(name == primary_key)) for name, dtype in df.dtypes.items()]
         
         table = Table(table_name, metadata, *columns)
         table.create(engine)

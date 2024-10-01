@@ -3,7 +3,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %I:%M:%S %p")
 
-def transforming_db_data(df):
+def transforming_into_DWH(df):
     """
     Function to transform the data from the DB and define the DWH schema
     """
@@ -11,11 +11,19 @@ def transforming_db_data(df):
     try:
         logging.info("Starting transformation of DB data.")
 
+        # Convert 'date' column to datetime
+        logging.info("Converting 'date' column to datetime format.")
+        df['date'] = pd.to_datetime(df['date'])
+
         # Process location data
         logging.info("Extracting location data from DataFrame.")
-        location = df[['country', 'country_txt', 'region', 'region_txt', 'city']]
+        location = df[['country', 'country_txt', 'region', 'region_txt', 'city']].copy()
         logging.info("Creating 'id_location' by concatenating country, region, and city.")
-        location['id_location'] = df['country'].astype(str) + df['region'].astype(str) + df['city'].astype(str)
+        location['id_location'] = (
+            location['country'].astype(str) +
+            location['region'].astype(str) +
+            location['city'].astype(str)
+        )
         logging.info("Dropping duplicate entries from location data.")
         location = location.drop_duplicates()
         logging.info("Dropping 'country' and 'region' columns from location data.")
@@ -31,7 +39,7 @@ def transforming_db_data(df):
         logging.info("Processing date data.")
         date = df[['date']].copy()
         logging.info("Creating 'id_date' by formatting date.")
-        date['id_date'] = df['date'].dt.strftime('%Y%m%d')
+        date['id_date'] = date['date'].dt.strftime('%Y%m%d')
         logging.info("Dropping duplicate entries from date data.")
         date = date.drop_duplicates()
 
@@ -42,9 +50,14 @@ def transforming_db_data(df):
                                     'INT_ANY']].copy()
         logging.info("Creating 'id_attack' for attack characteristics.")
         attackCharacteristics['id_attack'] = (
-            df['attacktype1'].astype(str) + df['targtype1'].astype(str) + df['natlty1'].astype(str) +
-            df['weaptype1'].astype(str) + df['crit1'].astype(str) + df['crit2'].astype(str) +
-            df['crit3'].astype(str) + df['INT_ANY'].astype(str)
+            attackCharacteristics['attacktype1'].astype(str) +
+            attackCharacteristics['targtype1'].astype(str) +
+            attackCharacteristics['natlty1'].astype(str) +
+            attackCharacteristics['weaptype1'].astype(str) +
+            attackCharacteristics['crit1'].astype(str) +
+            attackCharacteristics['crit2'].astype(str) +
+            attackCharacteristics['crit3'].astype(str) +
+            attackCharacteristics['INT_ANY'].astype(str)
         )
         logging.info("Dropping duplicate entries from attack characteristics.")
         attackCharacteristics = attackCharacteristics.drop_duplicates()
@@ -64,7 +77,10 @@ def transforming_db_data(df):
         logging.info("Processing perpetrator characteristics data.")
         perpetratorCharacteristics = df[['gname', 'individual', 'nperps', 'nperpcap', 'claimed']].copy()
         logging.info("Creating 'id_perpetrator' for perpetrator characteristics.")
-        perpetratorCharacteristics['id_perpetrator'] = df['eventid'].astype(str) + df['gname'].astype(str) 
+        perpetratorCharacteristics['id_perpetrator'] = (
+            perpetratorCharacteristics['gname'].astype(str) +
+            perpetratorCharacteristics['individual'].astype(str)
+        )
         logging.info("Dropping duplicate entries from perpetrator characteristics.")
         perpetratorCharacteristics = perpetratorCharacteristics.drop_duplicates()
         logging.info("Dropping NaN values from perpetrator characteristics.")
@@ -74,7 +90,7 @@ def transforming_db_data(df):
         logging.info("Processing disorder type data.")
         disorderType = df[['disorder_type']].copy()
         logging.info("Creating 'id_disorder' by mapping disorder types.")
-        disorderType['id_disorder'] = df['disorder_type'].replace({
+        disorderType['id_disorder'] = disorderType['disorder_type'].replace({
             'Political Violence': 1,
             'Political Violence; demonstrations': 2,
             'demonstrations': 3,
@@ -88,14 +104,26 @@ def transforming_db_data(df):
 
         # Update fact table with new IDs
         logging.info("Updating the fact table with new IDs.")
-        df['id_location'] = df['country'].astype(str) + df['region'].astype(str) + df['city'].astype(str)
+        df['id_location'] = (
+            df['country'].astype(str) +
+            df['region'].astype(str) +
+            df['city'].astype(str)
+        )
         df['id_date'] = df['date'].dt.strftime('%Y%m%d')
         df['id_attack'] = (
-            df['attacktype1'].astype(str) + df['targtype1'].astype(str) + df['natlty1'].astype(str) +
-            df['weaptype1'].astype(str) + df['crit1'].astype(str) + df['crit2'].astype(str) +
-            df['crit3'].astype(str) + df['INT_ANY'].astype(str)
+            df['attacktype1'].astype(str) +
+            df['targtype1'].astype(str) +
+            df['natlty1'].astype(str) +
+            df['weaptype1'].astype(str) +
+            df['crit1'].astype(str) +
+            df['crit2'].astype(str) +
+            df['crit3'].astype(str) +
+            df['INT_ANY'].astype(str)
         )
-        df['id_perpetrator'] = df['eventid'].astype(str) + df['gname'].astype(str)
+        df['id_perpetrator'] = (
+            df['gname'].astype(str) +
+            df['individual'].astype(str)
+        )
         df['id_disorder'] = df['disorder_type'].replace({
             'Political Violence': 1,
             'Political Violence; demonstrations': 2,
@@ -106,6 +134,8 @@ def transforming_db_data(df):
         logging.info("Selecting relevant columns for the fact table.")
         df = df[['eventid', 'extended', 'multiple', 'success', 'suicide', 'nkill', 'property', 'ishostkid', 
                  'nwound', 'id_location', 'id_date', 'id_attack', 'id_perpetrator', 'id_disorder']]
+        
+        df = df.drop_duplicates(subset=['eventid'])
 
         logging.info("Transformation complete. Returning DataFrames.")
         return location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df

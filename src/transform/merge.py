@@ -12,6 +12,9 @@ def merging_data(df_db, df_api):
     Returns:
         DataFrame: Merged DataFrame.
     """
+    logging.info(f"df_db columns: {df_db.columns.tolist()}")
+    logging.info(f"df_api columns: {df_api.columns.tolist()}")
+    
     logging.info("Starting to merge the data.")
 
     try:

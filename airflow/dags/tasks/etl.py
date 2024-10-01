@@ -6,9 +6,11 @@ from database.db_operations import creating_engine, load_clean_data
 from extract.extract_db import extracting_db_data
 from extract.extract_api import extracting_api_data
 
-from transform.transform_db import transforming_db_data
+from transform.transform_DWH import transforming_into_DWH
 from transform.transform_api import transforming_api_data
 from transform.merge import merging_data
+
+from load.load_DWH import loading_data
 
 engine = creating_engine()
 
@@ -44,22 +46,6 @@ def extract_api():
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error extracting API data: {e}")
-
-
-def transform_db(df_json):
-    """
-    Function to define the DWH schema.
-    
-    """
-    try:        
-        json_data = json.loads(df_json)
-        raw_data = pd.DataFrame(json_data)
-        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, factTable = transforming_db_data(raw_data)
-        
-        return location.to_json(orient="records"), date.to_json(orient="records"), attackCharacteristics.to_json(orient="records"), perpetratorCharacteristics.to_json(orient="records"), disorderType.to_json(orient="records"), factTable.to_json(orient="records")
-    except Exception as e:
-        logging.error(f"Error defining DWH schema from JSON: {e}")
-        return None, None, None, None, None, None
 
 
 def transform_api(df_json):
@@ -107,35 +93,31 @@ def merge(df_json_db, df_json_api):
         logging.error(f"Error merging data: {e}")
 
 
-def load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json):
+def transform_into_DWH(df_json):
     """
-    Load the data into the DWH.
+    Function to define the DWH schema.
     
     """
-    
-    logging.info("Starting to load the data.")
-    
-    try:
-        if not location_json or not date_json or not attackCharacteristics_json or not perpetratorCharacteristics_json or not disorderType_json or not df_json:
-            raise ValueError("Empty JSON string")
+    try:        
+        json_data = json.loads(df_json)
+        raw_data = pd.DataFrame(json_data)
+        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, factTable = transforming_into_DWH(raw_data)
         
-        location = pd.json_normalize(data=json.loads(location_json))
-        date = pd.json_normalize(data=json.loads(date_json))
-        attackCharacteristics = pd.json_normalize(data=json.loads(attackCharacteristics_json))
-        perpetratorCharacteristics = pd.json_normalize(data=json.loads(perpetratorCharacteristics_json))
-        disorderType = pd.json_normalize(data=json.loads(disorderType_json))
-        df = pd.json_normalize(data=json.loads(df_json))
-        
-        engine = creating_engine()
-        
-        load_clean_data(engine, location, "location")
-        load_clean_data(engine, date, "date")
-        load_clean_data(engine, attackCharacteristics, "attack_characteristics")
-        load_clean_data(engine, perpetratorCharacteristics, "perpetrator_characteristics")
-        load_clean_data(engine, disorderType, "disorder_type")
-        load_clean_data(engine, df, "fact_table")
+        return location.to_json(orient="records"), date.to_json(orient="records"), attackCharacteristics.to_json(orient="records"), perpetratorCharacteristics.to_json(orient="records"), disorderType.to_json(orient="records"), factTable.to_json(orient="records")
+    except Exception as e:
+        logging.error(f"Error defining DWH schema from JSON: {e}")
+        return None, None, None, None, None, None
 
-        logging.info("Data successfully loaded.")
+
+def load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json):
+    try:    
+        location = pd.DataFrame(json.loads(location_json))
+        date = pd.DataFrame(json.loads(date_json))
+        attackCharacteristics = pd.DataFrame(json.loads(attackCharacteristics_json))
+        perpetratorCharacteristics = pd.DataFrame(json.loads(perpetratorCharacteristics_json))
+        disorderType = pd.DataFrame(json.loads(disorderType_json))
+        df = pd.DataFrame(json.loads(df_json))
+
+        return loading_data(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df)
     except Exception as e:
         logging.error(f"Error loading data: {e}")
-        return None
