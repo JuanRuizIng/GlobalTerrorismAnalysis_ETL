@@ -86,8 +86,8 @@ def transforming_db_data(df):
         logging.info("Dropping NaN values from disorder type data.")
         disorderType = disorderType.dropna()
 
-        # Update main DataFrame with new IDs
-        logging.info("Updating main DataFrame with new IDs.")
+        # Update fact table with new IDs
+        logging.info("Updating the fact table with new IDs.")
         df['id_location'] = df['country'].astype(str) + df['region'].astype(str) + df['city'].astype(str)
         df['id_date'] = df['date'].dt.strftime('%Y%m%d')
         df['id_attack'] = (
@@ -103,7 +103,7 @@ def transforming_db_data(df):
             'Strategic developments': 4,
             'Unknown': 5
         })
-        logging.info("Selecting relevant columns for the final DataFrame.")
+        logging.info("Selecting relevant columns for the fact table.")
         df = df[['eventid', 'extended', 'multiple', 'success', 'suicide', 'nkill', 'property', 'ishostkid', 
                  'nwound', 'id_location', 'id_date', 'id_attack', 'id_perpetrator', 'id_disorder']]
 
