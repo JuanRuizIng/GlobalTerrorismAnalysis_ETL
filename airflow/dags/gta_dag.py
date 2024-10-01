@@ -25,8 +25,7 @@ default_args = {
     description='Creating an ETL pipeline for our GTA database.',
     schedule=timedelta(days=1),
     max_active_runs=1,
-    catchup=False,
-    concurrency=4,
+    catchup=False
 )
 
 def gta_dag():

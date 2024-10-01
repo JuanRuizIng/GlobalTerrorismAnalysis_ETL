@@ -6,7 +6,9 @@ from database.db_operations import creating_engine, load_clean_data
 from extract.extract_db import extracting_db_data
 from extract.extract_api import extracting_api_data
 
-from etl.etlFunctions import transform_db, transform_api, merge_function
+from transform.transform_db import transforming_db_data
+from transform.transform_api import transforming_api_data
+from transform.merge import merging_data
 
 engine = creating_engine()
 
@@ -49,16 +51,12 @@ def transform_db(df_json):
     Function to define the DWH schema.
     
     """
-    try:
-        if not df_json:
-            raise ValueError("Empty JSON string")
-        
+    try:        
         json_data = json.loads(df_json)
-        df = pd.json_normalize(data=json_data)
+        raw_data = pd.DataFrame(json_data)
+        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, factTable = transforming_db_data(raw_data)
         
-        location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df = transform_db(df)
-        
-        return location.to_json(orient="records"), date.to_json(orient="records"), attackCharacteristics.to_json(orient="records"), perpetratorCharacteristics.to_json(orient="records"), disorderType.to_json(orient="records"), df.to_json(orient="records")
+        return location.to_json(orient="records"), date.to_json(orient="records"), attackCharacteristics.to_json(orient="records"), perpetratorCharacteristics.to_json(orient="records"), disorderType.to_json(orient="records"), factTable.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error defining DWH schema from JSON: {e}")
         return None, None, None, None, None, None
@@ -70,16 +68,10 @@ def transform_api(df_json):
         
     """
     
-    logging.info("Starting to transform the data.")
-    
     try:
-        if not df_json:
-            raise ValueError("Empty JSON string")
-        
         json_data = json.loads(df_json)
-        df = pd.json_normalize(data=json_data)
+        df = pd.DataFrame(json_data)    
         df = transform_api(df)
-        logging.info("Data successfully transformed.")
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error transforming data: {e}")
@@ -104,14 +96,12 @@ def merge(df_json_db, df_json_api):
             raise ValueError("Empty JSON string")
         
         json_data_db = json.loads(df_json_db)
-        df_db = pd.json_normalize(data=json_data_db)
+        df_db = pd.DataFrame(json_data_db)
         
         json_data_api = json.loads(df_json_api)
-        df_api = pd.json_normalize(data=json_data_api)
+        df_api = pd.DataFrame(json_data_api)
         
-        df = merge_function(df_db, df_api)
-
-        logging.info("Data successfully merged.")
+        df = merging_data(df_db, df_api)
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error merging data: {e}")

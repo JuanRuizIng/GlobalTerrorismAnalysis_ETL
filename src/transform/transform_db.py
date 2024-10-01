@@ -1,12 +1,11 @@
-import json
 import pandas as pd
 import logging
 
-
-def transform_db(df):
+def transforming_db_data(df):
     """
     Function to transform the data from the DB and define the DWH schema
     """
+    
     try:
         location = df[['country', 'country_txt', 'region', 'region_txt', 'city']]
         location['id_location'] = df['country'].astype(str) + df['region'].astype(str) + df['city'].astype(str)
@@ -49,50 +48,3 @@ def transform_db(df):
     except Exception as e:
         logging.error(f"Error defining DWH schema: {e}")
         return None, None, None, None, None, None
-
-
-def transform_api(df):
-    """
-    Transform the data extracted from the API.
-
-    Parameters:
-        df (DataFrame): DataFrame containing the data to transform.
-    
-    Returns:
-        DataFrame: Transformed DataFrame.
-    """
-    logging.info("Starting to transform the data from the API.")
-    try:
-        df = df.dropna()
-        df['date_country_actor'] = df['event_date'].astype(str) + df['country'] + df['actor1']
-        return df
-    except Exception as e:
-        logging.error(f"Error transforming data: {e}")
-        return None
-
-
-def merge_function(df_db, df_api):
-    """
-    Merge the transformed data from the database and the API.
-
-    Parameters:
-        df_db (DataFrame): DataFrame containing the transformed data from the database.
-        df_api (DataFrame): DataFrame containing the transformed data from the API.
-    
-    Returns:
-        DataFrame: Merged DataFrame.
-    """
-    logging.info("Starting to merge the data.")
-
-    try:
-        df = pd.merge(df_db, df_api, how='left', on='date_country_actor')
-
-        df = df.drop(['event_date', 'country_y', 'actor1'], axis=1)
-        df = df.rename(columns={'country_x': 'country'})
-        df['disorder_type'] = df['disorder_type'].fillna("Unknown")
-
-        logging.info("Data successfully merged.")
-        return df
-    except Exception as e:
-        logging.error(f"Error merging data: {e}")
-        return None
