@@ -71,7 +71,7 @@ def transform_api(df_json):
     try:
         json_data = json.loads(df_json)
         df = pd.DataFrame(json_data)    
-        df = transform_api(df)
+        df = transforming_api_data(df)
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error transforming data: {e}")
