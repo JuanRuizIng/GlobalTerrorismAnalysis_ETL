@@ -208,7 +208,7 @@ We execute the 3 notebooks following the next order. You can run these by just p
    1. *001_rawDataLoad.ipynb*
    2. *002_GlobalTerrorismEDA.ipynb*
    3. *003_cleanDataLoad.ipynb*
-   4. *004_api_analysis*
+   4. *004_api_analysis.ipynb*
 
 ![orden_ejecucion](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
 
