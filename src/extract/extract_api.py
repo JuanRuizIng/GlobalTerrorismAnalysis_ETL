@@ -10,9 +10,7 @@ load_dotenv("./env/.env")
 api_key = os.getenv("API_KEY")
 api_email = os.getenv("API_EMAIL")
 
-import logging
-import requests
-import pandas as pd
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %I:%M:%S %p")
 
 def extracting_api_data():
     try:
