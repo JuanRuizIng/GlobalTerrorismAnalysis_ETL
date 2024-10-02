@@ -78,6 +78,7 @@ def transforming_into_DWH(df):
         perpetratorCharacteristics = df[['gname', 'individual', 'nperps', 'nperpcap', 'claimed']].copy()
         logging.info("Creating 'id_perpetrator' for perpetrator characteristics.")
         perpetratorCharacteristics['id_perpetrator'] = (
+            df["eventid"].astype(str) +
             perpetratorCharacteristics['gname'].astype(str) +
             perpetratorCharacteristics['individual'].astype(str)
         )
@@ -121,6 +122,7 @@ def transforming_into_DWH(df):
             df['INT_ANY'].astype(str)
         )
         df['id_perpetrator'] = (
+            df["eventid"].astype(str) +
             df['gname'].astype(str) +
             df['individual'].astype(str)
         )
