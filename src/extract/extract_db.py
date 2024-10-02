@@ -5,7 +5,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %I:%M:%S %p")
 
-## ----- Grammys Extract ----- ##
+## ----- DB Extract ----- ##
 
 def extracting_db_data():
     """
