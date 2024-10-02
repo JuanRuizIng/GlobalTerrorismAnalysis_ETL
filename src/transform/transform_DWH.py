@@ -93,8 +93,11 @@ def transforming_into_DWH(df):
         logging.info("Creating 'id_disorder' by mapping disorder types.")
         disorderType['id_disorder'] = disorderType['disorder_type'].replace({
             'Political Violence': 1,
+            'Political violence': 1,
             'Political Violence; demonstrations': 2,
+            'Political Violence; Demonstrations': 2,
             'demonstrations': 3,
+            'Demonstrations': 3,
             'Strategic developments': 4,
             'Unknown': 5
         })
@@ -128,8 +131,11 @@ def transforming_into_DWH(df):
         )
         df['id_disorder'] = df['disorder_type'].replace({
             'Political Violence': 1,
+            'Political violence': 1,
             'Political Violence; demonstrations': 2,
+            'Political Violence; Demonstrations': 2,
             'demonstrations': 3,
+            'Demonstrations': 3,
             'Strategic developments': 4,
             'Unknown': 5
         })
