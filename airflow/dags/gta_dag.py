@@ -6,7 +6,6 @@ from airflow.decorators import dag, task
 
 # Importing the necessary modules and env variables
 # --------------------------------
-
 from tasks.etl import *
 
 default_args = {
@@ -69,8 +68,26 @@ def gta_dag():
         perpetratorCharacteristics_json = db_data["perpetratorCharacteristics"]
         disorderType_json = db_data["disorderType"]
         df_json = db_data["df"]
-        return load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json)
+        load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json)
+        return {
+            "location_json": location_json,
+            "date_json": date_json,
+            "attackCharacteristics_json": attackCharacteristics_json,
+            "perpetratorCharacteristics_json": perpetratorCharacteristics_json,
+            "disorderType_json": disorderType_json,
+            "df_json": df_json
+        }
     
+    @task
+    def kafka_streaming(data):
+        kafka_producer(
+            data["location_json"],
+            data["date_json"],
+            data["attackCharacteristics_json"],
+            data["perpetratorCharacteristics_json"],
+            data["disorderType_json"],
+            data["df_json"]
+        )
 
     data_db = extract_db_task()
     data_api = extract_api_task()
@@ -81,6 +98,9 @@ def gta_dag():
     
     dimensional_model = transform_into_DWH_task(merge_data)
     
-    load_task(dimensional_model)
+    loaded_data = load_task(dimensional_model)
+
+    kafka_streaming(loaded_data)
+
     
 global_terrorism_dag = gta_dag()

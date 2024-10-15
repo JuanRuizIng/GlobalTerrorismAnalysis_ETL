@@ -1,7 +1,7 @@
 # Importing the necessary modules
 # --------------------------------
 
-from database.db_operations import creating_engine, load_clean_data
+from database.db_operations import creating_engine
 
 from extract.extract_db import extracting_db_data
 from extract.extract_api import extracting_api_data
@@ -11,6 +11,8 @@ from transform.transform_api import transforming_api_data
 from transform.merge import merging_data
 
 from load.load_DWH import loading_data
+
+from streaming.kafka_functions import kafka_producer
 
 engine = creating_engine()
 
@@ -117,7 +119,28 @@ def load(location_json, date_json, attackCharacteristics_json, perpetratorCharac
         perpetratorCharacteristics = pd.DataFrame(json.loads(perpetratorCharacteristics_json))
         disorderType = pd.DataFrame(json.loads(disorderType_json))
         df = pd.DataFrame(json.loads(df_json))
-
-        return loading_data(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df)
+        loading_data(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df)
+        return location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json
     except Exception as e:
         logging.error(f"Error loading data: {e}")
+
+def kafka_streaming(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json):
+    """
+    Function to stream data from Kafka.
+    
+    """
+
+    try:
+        location = pd.DataFrame(json.loads(location_json))
+        date = pd.DataFrame(json.loads(date_json))
+        attackCharacteristics = pd.DataFrame(json.loads(attackCharacteristics_json))
+        perpetratorCharacteristics = pd.DataFrame(json.loads(perpetratorCharacteristics_json))
+        disorderType = pd.DataFrame(json.loads(disorderType_json))
+        df = pd.DataFrame(json.loads(df_json))
+        logging.debug("Data from load is ", location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json)
+        print("Data from load is ", location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json,)
+        kafka_producer(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df)
+
+        logging.info("Data successfully loaded from Kafka.")
+    except Exception as e:
+        logging.error(f"Error streaming data from Kafka: {e}")

@@ -13,6 +13,7 @@ matplotlib = "^3.9.2"
 python-dotenv = "^1.0.1"
 seaborn = "^0.13.2"
 psycopg2-binary = "2.9.9"
+kafka-python = "^2.0.2"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"

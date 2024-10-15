@@ -10,7 +10,7 @@ def loading_data(location, date, attackCharacteristics, perpetratorCharacteristi
     logging.info("Starting to load the data.")
     
     try:        
-        engine = creating_engine(database="gta_dimensional_model")
+        engine = creating_engine()
         
         load_clean_data(engine, location, "location")
         load_clean_data(engine, date, "date")
