@@ -29,6 +29,7 @@ def send_in_batches(producer, data, batch_size=5):
         batch_size (int): The size of each batch.
     """
     data = pd.read_json(data)
+    data = data[["nkill", "nwound"]]
     for i in range(0, len(data), batch_size):
         batch = data.iloc[i:i + batch_size].to_dict(orient='records')
         producer.send("GTA_etl_kafka", value=batch)
@@ -36,26 +37,11 @@ def send_in_batches(producer, data, batch_size=5):
         logging.info(f"Batch sent: {batch}")
         time.sleep(4)  # Optional: Sleep to simulate delay
 
-def kafka_producer(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df):
+def kafka_producer(df):
     producer = create_kafka_producer()
     try:
         send_in_batches(producer, df)
         logging.info("Messages to fact table sent")
-
-        send_in_batches(producer, location)
-        logging.info("Messages to location sent")
-
-        send_in_batches(producer, date)
-        logging.info("Messages to date sent")
-
-        send_in_batches(producer, attackCharacteristics)
-        logging.info("Messages to attack characteristics sent")
-
-        send_in_batches(producer, perpetratorCharacteristics)
-        logging.info("Messages to perpetrator characteristics sent")
-
-        send_in_batches(producer, disorderType)
-        logging.info("Messages to disorder type sent")
 
         return "Data sent to Kafka topic"
     except Exception as e:

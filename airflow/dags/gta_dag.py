@@ -70,22 +70,12 @@ def gta_dag():
         df_json = db_data["df"]
         load(location_json, date_json, attackCharacteristics_json, perpetratorCharacteristics_json, disorderType_json, df_json)
         return {
-            "location_json": location_json,
-            "date_json": date_json,
-            "attackCharacteristics_json": attackCharacteristics_json,
-            "perpetratorCharacteristics_json": perpetratorCharacteristics_json,
-            "disorderType_json": disorderType_json,
             "df_json": df_json
         }
     
     @task
     def kafka_streaming(data):
         kafka_producer(
-            data["location_json"],
-            data["date_json"],
-            data["attackCharacteristics_json"],
-            data["perpetratorCharacteristics_json"],
-            data["disorderType_json"],
             data["df_json"]
         )
 
