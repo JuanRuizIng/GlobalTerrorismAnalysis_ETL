@@ -3,6 +3,13 @@ from json import dumps, loads
 import logging
 import time
 import pandas as pd
+import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv("src/env/.env")
+
+api_endpoint = os.getenv("API_ENDPOINT")
 
 def create_kafka_producer():
     return KafkaProducer(
@@ -19,7 +26,7 @@ def create_kafka_consumer():
         bootstrap_servers=['localhost:9092']
     )
 
-def send_in_batches(producer, data, batch_size=5):
+def send_in_batches(producer, data, batch_size=10):
     """
     Send data to Kafka in batches.
     
@@ -29,13 +36,12 @@ def send_in_batches(producer, data, batch_size=5):
         batch_size (int): The size of each batch.
     """
     data = pd.read_json(data)
-    data = data[["nkill", "nwound"]]
     for i in range(0, len(data), batch_size):
         batch = data.iloc[i:i + batch_size].to_dict(orient='records')
         producer.send("GTA_etl_kafka", value=batch)
         producer.flush()
         logging.info(f"Batch sent: {batch}")
-        time.sleep(4)  # Optional: Sleep to simulate delay
+        time.sleep(4)
 
 def kafka_producer(df):
     producer = create_kafka_producer()
@@ -50,12 +56,13 @@ def kafka_producer(df):
 
 def kafka_consumer():
     consumer = create_kafka_consumer()
-    try:
-        for m in consumer:
-            logging.info(m.value)
-    except Exception as e:
-        logging.error(f"Error consuming messages: {e}")
+    for m in consumer:
+        message = m.value
+        logging.info(m.value)
+        df = pd.DataFrame(message)
+        data = bytes(df.to_json(orient='records'), 'utf-8')
+        requests.post(api_endpoint, data)
+        logging.info("Data sent to API")
 
-#if __name__ == "__main__":
-#    kafka_consumer()
-    # kafka_producer # Se tendría que hacer así, pero para entregable de proyecto no se hará.
+if __name__ == "__main__":
+    kafka_consumer()
