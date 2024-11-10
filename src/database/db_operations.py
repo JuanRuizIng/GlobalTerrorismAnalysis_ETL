@@ -8,7 +8,7 @@ import warnings
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
 
-load_dotenv("src/env/.env")
+load_dotenv("./env/.env")
 
 user = os.getenv("PG_USER")
 password = os.getenv("PG_PASSWORD")

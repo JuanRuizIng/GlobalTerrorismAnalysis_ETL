@@ -7,7 +7,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-load_dotenv("src/env/.env")
+load_dotenv("./env/.env")
 
 api_endpoint = os.getenv("API_ENDPOINT")
 
