@@ -38,6 +38,12 @@ These libraries are included in the Poetry project config file ([`pyproject.toml
 
 ---
 
+**The images used in Docker are:**
+
+* confluentinc/cp-zookeeper
+* confluentinc/cp-kafka
+
+The configuration and installation of these images are facilitated by the Docker Compose config file ([`docker-compose.yml`](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/docker-compose.yml)). The explanation for using these images will be explained later.
 
 ## Dataset Information <img src="https://github.com/user-attachments/assets/5fa5298c-e359-4ef1-976d-b6132e8bda9a" alt="Dataset" width="30px"/>
 
@@ -92,7 +98,7 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 
 ## API Information <img src="https://cdn-icons-png.flaticon.com/512/10169/10169724.png" alt="API" width="30px"/>
 
-For this installment of the project, [we must also use an API](https://acleddata.com/) that must be merged with the main dataset using a ***merge***. After passing such data through cleansing and transformation processes, our dataset presents the following columns arranged for analysis and visualization of your data:
+For this installment of the project, [we must also use an API](https://acleddata.com/) that must be **merged** with the main dataset. After passing such data through cleansing and transformation processes, our dataset presents the following columns arranged for analysis and visualization of your data:
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -217,12 +223,19 @@ We execute the 3 notebooks following the next order. You can run these by just p
    2. *002_GlobalTerrorismEDA.ipynb*
    3. *003_cleanDataLoad.ipynb*
    4. *004_api_analysis.ipynb*
+   5. *005_ML_model.ipynb* (optional)
 
 ![orden_ejecucion](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
 
 Remember to choose **the right Python kernel** at the time of running the notebook.
 
 ![py_kernel](https://github.com/user-attachments/assets/684d8050-2990-4825-838e-55d0c82f9d9d)
+
+---
+
+### 🐳 Run Kafka in Docker
+
+(more info)
 
 ---
 
