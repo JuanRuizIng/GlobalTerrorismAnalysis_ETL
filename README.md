@@ -14,6 +14,7 @@ In this case we decided to use a dataset that includes information on terrorist 
 
 * Python 3.10 ➜ [Download site](https://www.python.org/downloads/)
 * Jupyter Notebook ➜ [VS Code tool for using notebooks](https://youtu.be/ZYat1is07VI?si=BMHUgk7XrJQksTkt)
+* Docker ➜ [Download site for Docker Desktop](https://www.docker.com/products/docker-desktop/)
 * PostgreSQL ➜ [Download site](https://www.postgresql.org/download/)
 * Power BI (Desktop version) ➜ [Download site](https://www.microsoft.com/es-es/power-platform/products/power-bi/desktop)
 
@@ -22,14 +23,21 @@ In this case we decided to use a dataset that includes information on terrorist 
 
 The dependencies needed for Python are:
 
-* Apache Airflow
-* Dotenv
-* Pandas
-* Matplotlib
-* Seaborn
-* SQLAlchemy
+* apache-airflow
+* python-dotenv
+* kafka-python
+* pandas
+* matplotlib
+* seaborn
+* sqlalchemy
+* psycopg2-binary
+* scikit-learn
+* xgboost
 
-These dependencies are included in the *requirements.txt* file of the Python project. The step-by-step installation will be described later.
+These libraries are included in the Poetry project config file ([`pyproject.toml`](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/pyproject.toml)). The step-by-step installation will be described later.
+
+---
+
 
 ## Dataset Information <img src="https://github.com/user-attachments/assets/5fa5298c-e359-4ef1-976d-b6132e8bda9a" alt="Dataset" width="30px"/>
 
