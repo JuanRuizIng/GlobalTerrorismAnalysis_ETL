@@ -119,6 +119,7 @@ def load(location_json, date_json, attackCharacteristics_json, perpetratorCharac
         perpetratorCharacteristics = pd.DataFrame(json.loads(perpetratorCharacteristics_json))
         disorderType = pd.DataFrame(json.loads(disorderType_json))
         df = pd.DataFrame(json.loads(df_json))
+        
         loading_data(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df)
         return df_json
     except Exception as e:
