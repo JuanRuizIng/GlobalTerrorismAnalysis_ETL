@@ -132,7 +132,7 @@ def kafka_streaming(df_json):
     """
 
     try:
-        df = pd.DataFrame(json.loads(df_json))
+        df = df_json
         logging.debug("Data from load is ", df_json)
         kafka_producer(df)
 

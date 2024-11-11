@@ -1,11 +1,12 @@
 from kafka import KafkaProducer, KafkaConsumer
 from json import dumps, loads
+from dotenv import load_dotenv
+
+import os
 import logging
 import time
 import pandas as pd
 import requests
-from dotenv import load_dotenv
-import os
 
 load_dotenv("./env/.env")
 
@@ -19,11 +20,12 @@ def create_kafka_producer():
 
 def create_kafka_consumer():
     return KafkaConsumer(
-        'GTA_etl_kafka',
+        "GTA_etl_kafka",
+        auto_offset_reset='earliest',
         enable_auto_commit=True,
-        group_id='my-group-1',
+        consumer_timeout_ms=10000,
         value_deserializer=lambda m: loads(m.decode('utf-8')),
-        bootstrap_servers=['localhost:9092']
+        bootstrap_servers="localhost:9092"
     )
 
 def send_in_batches(producer, data, batch_size=10):
@@ -55,6 +57,7 @@ def kafka_producer(df):
         return None
 
 def kafka_consumer():
+    logging.info("Starting to create the Kafka Consumer")
     consumer = create_kafka_consumer()
     for m in consumer:
         message = m.value

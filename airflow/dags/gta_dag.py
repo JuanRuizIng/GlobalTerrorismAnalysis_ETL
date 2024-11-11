@@ -74,10 +74,8 @@ def gta_dag():
         }
     
     @task
-    def kafka_streaming(data):
-        kafka_producer(
-            data["df_json"]
-        )
+    def kafka_stream(data):
+        kafka_streaming(data["df_json"])
 
     data_db = extract_db_task()
     data_api = extract_api_task()
@@ -90,7 +88,7 @@ def gta_dag():
     
     loaded_data = load_task(dimensional_model)
 
-    kafka_streaming(loaded_data)
+    kafka_stream(loaded_data)
 
     
 global_terrorism_dag = gta_dag()
