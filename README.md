@@ -235,7 +235,83 @@ Remember to choose **the right Python kernel** at the time of running the notebo
 
 ### 🐳 Run Kafka in Docker
 
-(more info)
+> [!IMPORTANT]
+> Make sure that Docker is installed in your system.
+
+To set up Kafka using Docker and run both the producer in Airflow and the consumer located in the [`kafka_functions.py`](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/src/streaming/kafka_functions.py) script, follow these steps:
+
+1. 🚀 **Start Kafka and Zookeeper Services**
+
+   Open your terminal or command prompt and navigate to the root directory of your cloned repository:
+
+   ```bash
+   cd GlobalTerrorismAnalysis_ETL
+   ```
+
+   Use the provided `docker-compose.yml` file to start the Kafka and Zookeeper services:
+
+   ```bash
+   docker compose up -d
+   ```
+
+   This command will start the services in detached mode. Docker will pull the necessary images if they are not already available locally.
+
+   Check if the Kafka and Zookeeper containers are up and running:
+
+   ```bash
+   docker ps
+   ```
+
+   You should see `GTA_etl_kafka` and `zookeeper` in the list of running containers.
+
+   #### Demonstration of the process
+
+   ![docker_compose_up](https://github.com/user-attachments/assets/c4342269-e5ce-4e26-ba74-9d51514b6e5f)
+
+2. 📌 **Create a Kafka Topic**
+
+   Create a Kafka topic that your producer and consumer will use. Make sure to name it `whr_kafka_topic` to not clash with the Python scripts:
+
+   ```bash
+   docker exec -it GTA_etl_kafka kafka-topics --create --topic GTA_etl_kafka --bootstrap-server localhost:9092
+   ```
+
+   List the available topics to confirm that the `whr_kafka_topic` has been created:
+
+   ```bash
+   docker exec -it GTA_etl_kafka kafka-topics --list --bootstrap-server localhost:9092
+   ```
+
+   #### Demonstration of the process
+   
+   ![create kafka topic](https://github.com/user-attachments/assets/b2035073-a849-49bd-84ef-184965822351)
+
+4. 🏃 **Run the Producer Script**
+
+    When the `kafka_streaming` task is running you will see the Kafka Producer running as well; it will start sending messages to the `GTA_etl_kafka` topic.
+
+    #### Demonstration of the process
+    
+    ![airflow kafka](https://github.com/user-attachments/assets/0caba135-11fb-4bfc-acc6-f9aa148ff4bc)
+
+4. 👂 **Run the Consumer Script**
+
+    Now navigate to the `./src/streaming` directory, and run the `kafka_functions.py` script **in a dedicated terminal**. You should now see the consumer receiving the messages in real-time and      sending them to the Power BI endpoint.
+
+   #### Demonstration of the process
+
+   ![kafka consumer](https://github.com/user-attachments/assets/e7f6c442-1908-414e-b7a9-28786a94cdd5)
+
+6. 🛑 **Shut Down the Services**
+
+    When you're finished, you can stop and remove the Kafka and Zookeeper containers:
+
+    ```bash
+    docker compose down
+    ```
+    #### Demonstration of the process
+    
+    ![docker compose down](https://github.com/user-attachments/assets/c667fe76-edb5-4384-a7b6-5e943c0901f4)
 
 ---
 
@@ -263,8 +339,6 @@ Allow Apache Airflow to read the modules contained in `src` by giving the absolu
 > You need to enter the address [http://localhost:8080](http://localhost:8080/) in order to run the Airflow GUI and run the DAG corresponding to the project (*gta_dag*).
 
 ![airflow](https://github.com/user-attachments/assets/b8bbb85c-c2da-4e57-9844-0fcfcc62db7a)
-
----
 
 ## Thank you! 💕🐍
 
