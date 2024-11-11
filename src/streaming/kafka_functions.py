@@ -8,6 +8,8 @@ import time
 import pandas as pd
 import requests
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %I:%M:%S %p")
+
 load_dotenv("./env/.env")
 
 api_endpoint = os.getenv("API_ENDPOINT")
@@ -23,7 +25,6 @@ def create_kafka_consumer():
         "GTA_etl_kafka",
         auto_offset_reset='earliest',
         enable_auto_commit=True,
-        consumer_timeout_ms=10000,
         value_deserializer=lambda m: loads(m.decode('utf-8')),
         bootstrap_servers="localhost:9092"
     )
@@ -57,15 +58,17 @@ def kafka_producer(df):
         return None
 
 def kafka_consumer():
-    logging.info("Starting to create the Kafka Consumer")
     consumer = create_kafka_consumer()
     for m in consumer:
         message = m.value
         logging.info(m.value)
+        
         df = pd.DataFrame(message)
         data = bytes(df.to_json(orient='records'), 'utf-8')
+        
         requests.post(api_endpoint, data)
         logging.info("Data sent to API")
 
 if __name__ == "__main__":
+    logging.info("Starting to create the Kafka Consumer")
     kafka_consumer()

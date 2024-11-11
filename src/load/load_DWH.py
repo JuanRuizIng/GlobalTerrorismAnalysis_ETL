@@ -2,6 +2,8 @@ import pandas as pd
 import logging
 from database.db_operations import creating_engine, disposing_engine, load_clean_data
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %I:%M:%S %p")
+
 def loading_data(location, date, attackCharacteristics, perpetratorCharacteristics, disorderType, df):
     """
     Carga los datos en el DWH.
