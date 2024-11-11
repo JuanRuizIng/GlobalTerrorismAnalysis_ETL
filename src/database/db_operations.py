@@ -19,7 +19,7 @@ port = os.getenv("PG_PORT")
 database = os.getenv("PG_DATABASE")
 
 # Creating the connection engine from the URL made up of the environment variables
-def creating_engine(database=database):
+def creating_engine():
     url = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     engine = create_engine(url)
     

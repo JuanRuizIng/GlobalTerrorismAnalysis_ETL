@@ -1,6 +1,8 @@
 import pandas as pd
 import logging
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %I:%M:%S %p")
+
 def merging_data(df_db, df_api):
     """
     Merge the transformed data from the database and the API.

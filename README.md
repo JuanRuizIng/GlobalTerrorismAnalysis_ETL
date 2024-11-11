@@ -14,6 +14,7 @@ In this case we decided to use a dataset that includes information on terrorist 
 
 * Python 3.10 ➜ [Download site](https://www.python.org/downloads/)
 * Jupyter Notebook ➜ [VS Code tool for using notebooks](https://youtu.be/ZYat1is07VI?si=BMHUgk7XrJQksTkt)
+* Docker ➜ [Download site for Docker Desktop](https://www.docker.com/products/docker-desktop/)
 * PostgreSQL ➜ [Download site](https://www.postgresql.org/download/)
 * Power BI (Desktop version) ➜ [Download site](https://www.microsoft.com/es-es/power-platform/products/power-bi/desktop)
 
@@ -22,14 +23,27 @@ In this case we decided to use a dataset that includes information on terrorist 
 
 The dependencies needed for Python are:
 
-* Apache Airflow
-* Dotenv
-* Pandas
-* Matplotlib
-* Seaborn
-* SQLAlchemy
+* apache-airflow
+* python-dotenv
+* kafka-python
+* pandas
+* matplotlib
+* seaborn
+* sqlalchemy
+* psycopg2-binary
+* scikit-learn
+* xgboost
 
-These dependencies are included in the *requirements.txt* file of the Python project. The step-by-step installation will be described later.
+These libraries are included in the Poetry project config file ([`pyproject.toml`](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/pyproject.toml)). The step-by-step installation will be described later.
+
+---
+
+**The images used in Docker are:**
+
+* confluentinc/cp-zookeeper
+* confluentinc/cp-kafka
+
+The configuration and installation of these images are facilitated by the Docker Compose config file ([`docker-compose.yml`](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/docker-compose.yml)). The explanation for using these images will be explained later.
 
 ## Dataset Information <img src="https://github.com/user-attachments/assets/5fa5298c-e359-4ef1-976d-b6132e8bda9a" alt="Dataset" width="30px"/>
 
@@ -84,7 +98,7 @@ After a rigorous cleaning and transformation process, our dataset has the follow
 
 ## API Information <img src="https://cdn-icons-png.flaticon.com/512/10169/10169724.png" alt="API" width="30px"/>
 
-For this installment of the project, [we must also use an API](https://acleddata.com/) that must be merged with the main dataset using a ***merge***. After passing such data through cleansing and transformation processes, our dataset presents the following columns arranged for analysis and visualization of your data:
+For this installment of the project, [we must also use an API](https://acleddata.com/) that must be **merged** with the main dataset. After passing such data through cleansing and transformation processes, our dataset presents the following columns arranged for analysis and visualization of your data:
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -126,7 +140,7 @@ For this installment of the project, [we must also use an API](https://acleddata
 
 ## Data flow <img src="https://cdn-icons-png.flaticon.com/512/1953/1953319.png" alt="Data flow" width="22px"/>
 
-![Flujo de datos](https://github.com/user-attachments/assets/9e196f2a-b330-452a-be45-78c8410332e8)
+![Flujo de datos - Tercer corte](https://github.com/user-attachments/assets/b96b41d9-d67e-47f3-af5f-e7692607b508)
 
 ## Run the project <img src="https://github.com/user-attachments/assets/99bffef1-2692-4cb8-ba13-d6c8c987c6dd" alt="Running code" width="30px"/>
 
@@ -209,12 +223,95 @@ We execute the 3 notebooks following the next order. You can run these by just p
    2. *002_GlobalTerrorismEDA.ipynb*
    3. *003_cleanDataLoad.ipynb*
    4. *004_api_analysis.ipynb*
+   5. *005_ML_model.ipynb* (optional)
 
 ![orden_ejecucion](https://github.com/user-attachments/assets/ed210736-f1ce-4ef3-a5b5-d8777202e132)
 
 Remember to choose **the right Python kernel** at the time of running the notebook.
 
 ![py_kernel](https://github.com/user-attachments/assets/684d8050-2990-4825-838e-55d0c82f9d9d)
+
+---
+
+### 🐳 Run Kafka in Docker
+
+> [!IMPORTANT]
+> Make sure that Docker is installed in your system.
+
+To set up Kafka using Docker and run both the producer in Airflow and the consumer located in the [`kafka_functions.py`](https://github.com/JuanRuizIng/GlobalTerrorismAnalysis_ETL/blob/main/src/streaming/kafka_functions.py) script, follow these steps:
+
+1. 🚀 **Start Kafka and Zookeeper Services**
+
+   Open your terminal or command prompt and navigate to the root directory of your cloned repository:
+
+   ```bash
+   cd GlobalTerrorismAnalysis_ETL
+   ```
+
+   Use the provided `docker-compose.yml` file to start the Kafka and Zookeeper services:
+
+   ```bash
+   docker compose up -d
+   ```
+
+   This command will start the services in detached mode. Docker will pull the necessary images if they are not already available locally.
+
+   Check if the Kafka and Zookeeper containers are up and running:
+
+   ```bash
+   docker ps
+   ```
+
+   You should see `GTA_etl_kafka` and `zookeeper` in the list of running containers.
+
+   #### Demonstration of the process
+
+   ![docker_compose_up](https://github.com/user-attachments/assets/c4342269-e5ce-4e26-ba74-9d51514b6e5f)
+
+2. 📌 **Create a Kafka Topic**
+
+   Create a Kafka topic that your producer and consumer will use. Make sure to name it `whr_kafka_topic` to not clash with the Python scripts:
+
+   ```bash
+   docker exec -it GTA_etl_kafka kafka-topics --create --topic GTA_etl_kafka --bootstrap-server localhost:9092
+   ```
+
+   List the available topics to confirm that the `whr_kafka_topic` has been created:
+
+   ```bash
+   docker exec -it GTA_etl_kafka kafka-topics --list --bootstrap-server localhost:9092
+   ```
+
+   #### Demonstration of the process
+   
+   ![create kafka topic](https://github.com/user-attachments/assets/b2035073-a849-49bd-84ef-184965822351)
+
+4. 🏃 **Run the Producer Script**
+
+    When the `kafka_streaming` task is running you will see the Kafka Producer running as well; it will start sending messages to the `GTA_etl_kafka` topic.
+
+    #### Demonstration of the process
+    
+    ![airflow kafka](https://github.com/user-attachments/assets/0caba135-11fb-4bfc-acc6-f9aa148ff4bc)
+
+4. 👂 **Run the Consumer Script**
+
+    Now navigate to the `./src/streaming` directory, and run the `kafka_functions.py` script **in a dedicated terminal**. You should now see the consumer receiving the messages in real-time and      sending them to the Power BI endpoint.
+
+   #### Demonstration of the process
+
+   ![kafka consumer](https://github.com/user-attachments/assets/e7f6c442-1908-414e-b7a9-28786a94cdd5)
+
+6. 🛑 **Shut Down the Services**
+
+    When you're finished, you can stop and remove the Kafka and Zookeeper containers:
+
+    ```bash
+    docker compose down
+    ```
+    #### Demonstration of the process
+    
+    ![docker compose down](https://github.com/user-attachments/assets/c667fe76-edb5-4384-a7b6-5e943c0901f4)
 
 ---
 
@@ -242,8 +339,6 @@ Allow Apache Airflow to read the modules contained in `src` by giving the absolu
 > You need to enter the address [http://localhost:8080](http://localhost:8080/) in order to run the Airflow GUI and run the DAG corresponding to the project (*gta_dag*).
 
 ![airflow](https://github.com/user-attachments/assets/b8bbb85c-c2da-4e57-9844-0fcfcc62db7a)
-
----
 
 ## Thank you! 💕🐍
 

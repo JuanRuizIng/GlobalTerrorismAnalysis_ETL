@@ -1,0 +1,29 @@
+version: '3.8' #Docker compose version 
+
+services: #Containers to run
+  zookeeper: # First container (Service)
+    image: confluentinc/cp-zookeeper:latest  #zookeeper docker image
+    container_name: zookeeper #container name
+    environment: #Envirnoment variables
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports: #maps port 2181 from the host to por 2181 inside the zookeeper container, allows to access zookeeper on port 2181 of your host machine
+      - 2181:2181
+
+  kafka-GTA: # Second container (Service)
+    image: confluentinc/cp-kafka:latest #latest version of kafka docker image
+    container_name: GTA_etl_kafka #Name of the container
+    depends_on:
+      - zookeeper #depends on zookeeper so kafka will not start until zookeeper service is up and running
+    environment:
+      KAFKA_BROKER_ID: 1 #The unique identifier for this Kafka broker (set to 1 in this case).
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181' #The connection information for ZooKeeper, which is accessible at zookeeper:2181.
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT #Defines the security protocols for Kafka listeners.
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092 #Defines the advertised endpoints for clients to connect to the Kafka broker.
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092" # port to use to connect from kafka broker to local host port
+    expose:
+     - "9093"
