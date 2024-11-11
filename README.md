@@ -140,7 +140,7 @@ For this installment of the project, [we must also use an API](https://acleddata
 
 ## Data flow <img src="https://cdn-icons-png.flaticon.com/512/1953/1953319.png" alt="Data flow" width="22px"/>
 
-![Flujo de datos](https://github.com/user-attachments/assets/9e196f2a-b330-452a-be45-78c8410332e8)
+![Flujo de datos - Tercer corte](https://github.com/user-attachments/assets/b96b41d9-d67e-47f3-af5f-e7692607b508)
 
 ## Run the project <img src="https://github.com/user-attachments/assets/99bffef1-2692-4cb8-ba13-d6c8c987c6dd" alt="Running code" width="30px"/>
 
