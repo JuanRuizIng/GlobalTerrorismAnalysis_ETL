@@ -8,6 +8,10 @@ data/
 __pycache__/
 venv/
 
+# Great Expectations
+gx/**
+!great_expectations.yml
+
 # Poetry
 poetry.lock
 
