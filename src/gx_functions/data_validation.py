@@ -30,11 +30,13 @@ def gx_validation(asset_name, suite_name, df, gx_expectations_object):
         logging.info("Retrieved existing pandas data source.")
     
     try:
-        data_asset = data_source.add_dataframe_asset(name=asset_name)
-        logging.info(f"Added data asset '{asset_name}'.")
-    except gx.exceptions.DataContextError:
-        data_asset = data_source.get_dataframe_asset(name=asset_name)
-        logging.info(f"Retrieved existing data asset '{asset_name}'.")
+        data_source.delete_asset(name=asset_name)
+        logging.info(f"Deleted existing asset '{asset_name}'.")
+    except:
+        logging.info(f"No existing asset '{asset_name}' to delete.")
+
+    data_asset = data_source.add_dataframe_asset(name=asset_name)
+    logging.info(f"Added data asset '{asset_name}'.")
 
     batch_definition_name = f"batch_definition_{asset_name}"
     try:    
