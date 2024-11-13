@@ -6,6 +6,8 @@ from database.db_operations import creating_engine
 from extract.extract_db import extracting_db_data
 from extract.extract_api import extracting_api_data
 
+from gx_functions.data_validation import db_validation, api_validation
+
 from transform.transform_DWH import transforming_into_DWH
 from transform.transform_api import transforming_api_data
 from transform.merge import merging_data
@@ -36,6 +38,19 @@ def extract_db():
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error extracting data: {e}")
+        
+def validate_db(df_json):
+    """
+    Validate the data extracted from the database.
+    
+    """
+    try:
+        json_data = json.loads(df_json)
+        df = pd.DataFrame(json_data)
+        db_validation(df)
+        return df.to_json(orient="records")
+    except Exception as e:
+        logging.error(f"Error validating data: {e}")
 
 
 def extract_api():
@@ -48,6 +63,19 @@ def extract_api():
         return df.to_json(orient="records")
     except Exception as e:
         logging.error(f"Error extracting API data: {e}")
+        
+def validate_api(df_json):
+    """
+    Validate the data extracted from the API.
+    
+    """
+    try:
+        json_data = json.loads(df_json)
+        df = pd.DataFrame(json_data)
+        api_validation(df)
+        return df.to_json(orient="records")
+    except Exception as e:
+        logging.error(f"Error validating data: {e}")
 
 
 def transform_api(df_json):
