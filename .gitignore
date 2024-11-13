@@ -11,7 +11,7 @@ venv/
 # Great Expectations
 gx/checkpoints/
 gx/plugins/
-gx/uncommited/
+gx/uncommitted/
 gx/validation_definitions/
 
 # Poetry
