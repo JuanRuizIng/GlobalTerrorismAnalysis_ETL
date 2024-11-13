@@ -1,0 +1,91 @@
+{
+  "expectations": [
+    {
+      "id": "75eadce8-fd4e-4d6e-9a57-cebf7844200a",
+      "kwargs": {
+        "column_list": [
+          "event_date",
+          "country",
+          "disorder_type",
+          "actor1"
+        ]
+      },
+      "meta": {},
+      "type": "expect_table_columns_to_match_ordered_list"
+    },
+    {
+      "id": "cac179c0-bb68-44b1-a743-13576b493214",
+      "kwargs": {
+        "column": "event_date"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "bdbf8ed7-e189-4a86-a2ca-6449bbcabc79",
+      "kwargs": {
+        "column": "country"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "c279f2ae-8f43-42ce-affd-dd52363ff155",
+      "kwargs": {
+        "column": "disorder_type"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "cc67e6cb-cf16-4074-b43d-2ad644160f02",
+      "kwargs": {
+        "column": "actor1"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "4de462f3-f76a-47da-850f-c8e18e1f05fe",
+      "kwargs": {
+        "column": "event_date",
+        "type_": "str"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_of_type"
+    },
+    {
+      "id": "caad7633-3987-4516-bad4-39a1ae115d35",
+      "kwargs": {
+        "column": "country",
+        "type_": "str"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_of_type"
+    },
+    {
+      "id": "2f5d5fb3-6262-4de9-8a26-fd1514b2dc37",
+      "kwargs": {
+        "column": "disorder_type",
+        "type_": "str"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_of_type"
+    },
+    {
+      "id": "a0dcc6e0-f3a4-4558-8ec9-9aa0c1e336e7",
+      "kwargs": {
+        "column": "actor1",
+        "type_": "str"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_of_type"
+    }
+  ],
+  "id": "ca74cc2d-c850-441a-8069-9126838a9ddf",
+  "meta": {
+    "great_expectations_version": "1.2.2"
+  },
+  "name": "api_suite",
+  "notes": null
+}
