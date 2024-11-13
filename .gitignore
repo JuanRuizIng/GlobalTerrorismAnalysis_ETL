@@ -8,6 +8,12 @@ data/
 __pycache__/
 venv/
 
+# Great Expectations
+gx/checkpoints/
+gx/plugins/
+gx/uncommitted/
+gx/validation_definitions/
+
 # Poetry
 poetry.lock
 

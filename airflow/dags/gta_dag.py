@@ -37,8 +37,16 @@ def gta_dag():
         return extract_db()
     
     @task
+    def validate_db_task(df_json):
+        return validate_db(df_json)
+    
+    @task
     def extract_api_task():
         return extract_api()
+    
+    @task
+    def validate_api_task(df_json):
+        return validate_api(df_json)
     
     @task
     def transform_api_task(df_json):
@@ -78,7 +86,10 @@ def gta_dag():
         kafka_streaming(data["df_json"])
 
     data_db = extract_db_task()
+    data_db = validate_db_task(data_db)
+    
     data_api = extract_api_task()
+    data_api = validate_api_task(data_api)
     
     transformed_data_api = transform_api_task(data_api)
     
