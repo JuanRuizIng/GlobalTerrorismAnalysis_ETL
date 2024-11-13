@@ -20,7 +20,6 @@ def get_gx_context():
 def gx_validation(asset_name, suite_name, df, gx_expectations_object):
     logging.info(f"Starting validation for asset '{asset_name}' with suite '{suite_name}'.")
     # Connect data to GX
-    
     gx_context = get_gx_context()
     
     try:
@@ -30,8 +29,12 @@ def gx_validation(asset_name, suite_name, df, gx_expectations_object):
         data_source = gx_context.data_sources.get("pandas")
         logging.info("Retrieved existing pandas data source.")
     
-    data_asset = data_source.add_dataframe_asset(name=asset_name)
-    logging.info(f"Added data asset '{asset_name}'.")
+    try:
+        data_asset = data_source.add_dataframe_asset(name=asset_name)
+        logging.info(f"Added data asset '{asset_name}'.")
+    except gx.exceptions.DataContextError:
+        data_asset = data_source.get_dataframe_asset(name=asset_name)
+        logging.info(f"Retrieved existing data asset '{asset_name}'.")
 
     batch_definition_name = f"batch_definition_{asset_name}"
     try:    
