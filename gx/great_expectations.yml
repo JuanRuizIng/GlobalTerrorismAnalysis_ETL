@@ -87,19 +87,19 @@ fluent_datasources:
     assets:
       gtd:
         type: dataframe
-        id: 38b313bd-3fd3-450a-8bcd-d8adcd5980ef
+        id: ab0840de-753b-4076-b7bd-308cd83de8c7
         batch_metadata: {}
         batch_definitions:
           batch_definition_gtd:
-            id: 29d1b284-28b4-49da-89a0-1d9e71ef5bdc
+            id: 814b45ed-c167-40a3-88ab-83b16a56e49c
             partitioner:
       api:
         type: dataframe
-        id: afd78ea7-1bb0-4bcb-94c1-ec3e3da400ce
+        id: 657e3ad8-cd6c-4f69-a501-dbfd38d6cf42
         batch_metadata: {}
         batch_definitions:
           batch_definition_api:
-            id: 8acbb0cf-8448-47e9-af9f-eeb84db25401
+            id: 9dec39fe-8821-44bf-a2ad-ef6c0893941a
             partitioner:
 analytics_enabled:
 data_context_id: 405b76f5-7842-4e16-b71f-955c8e077ae1

@@ -1,7 +1,7 @@
 {
   "expectations": [
     {
-      "id": "75eadce8-fd4e-4d6e-9a57-cebf7844200a",
+      "id": "7510de2b-7903-4cf9-8b70-72a44f65ac90",
       "kwargs": {
         "column_list": [
           "event_date",
@@ -14,7 +14,7 @@
       "type": "expect_table_columns_to_match_ordered_list"
     },
     {
-      "id": "cac179c0-bb68-44b1-a743-13576b493214",
+      "id": "9f605b9e-8bb7-41b5-8578-02199c198c6f",
       "kwargs": {
         "column": "event_date"
       },
@@ -22,7 +22,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "bdbf8ed7-e189-4a86-a2ca-6449bbcabc79",
+      "id": "567bc98d-07d7-4de7-9dc1-d4b9f9188a5c",
       "kwargs": {
         "column": "country"
       },
@@ -30,7 +30,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "c279f2ae-8f43-42ce-affd-dd52363ff155",
+      "id": "c88f9a47-3e2f-47e8-87ec-b2c77834e304",
       "kwargs": {
         "column": "disorder_type"
       },
@@ -38,7 +38,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "cc67e6cb-cf16-4074-b43d-2ad644160f02",
+      "id": "139da2e7-96f0-42ed-bfcb-be299b5707d3",
       "kwargs": {
         "column": "actor1"
       },
@@ -46,7 +46,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "4de462f3-f76a-47da-850f-c8e18e1f05fe",
+      "id": "076bf70f-1d7a-4840-ba19-8e90f660b623",
       "kwargs": {
         "column": "event_date",
         "type_": "str"
@@ -55,7 +55,7 @@
       "type": "expect_column_values_to_be_of_type"
     },
     {
-      "id": "caad7633-3987-4516-bad4-39a1ae115d35",
+      "id": "dbf0bd25-8007-433c-89cd-b5d581f53280",
       "kwargs": {
         "column": "country",
         "type_": "str"
@@ -64,7 +64,7 @@
       "type": "expect_column_values_to_be_of_type"
     },
     {
-      "id": "2f5d5fb3-6262-4de9-8a26-fd1514b2dc37",
+      "id": "9b3e8ada-8937-4774-84af-f81f5c89bdc2",
       "kwargs": {
         "column": "disorder_type",
         "type_": "str"
@@ -73,7 +73,7 @@
       "type": "expect_column_values_to_be_of_type"
     },
     {
-      "id": "a0dcc6e0-f3a4-4558-8ec9-9aa0c1e336e7",
+      "id": "54321514-b4b4-494f-a32b-456b3c45fbff",
       "kwargs": {
         "column": "actor1",
         "type_": "str"
@@ -82,7 +82,7 @@
       "type": "expect_column_values_to_be_of_type"
     }
   ],
-  "id": "ca74cc2d-c850-441a-8069-9126838a9ddf",
+  "id": "230b882d-a901-462d-b441-0bd8b1239552",
   "meta": {
     "great_expectations_version": "1.2.2"
   },
